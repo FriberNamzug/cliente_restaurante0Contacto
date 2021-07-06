@@ -25,7 +25,8 @@
           {
             "type": "element",
             "prefix": "app",
-            "style": "kebab-case"
+            "style": "kebab-case",
+            "skipBlankLines": true
           }
         ],
         "@angular-eslint/directive-selector": [
@@ -33,7 +34,8 @@
           {
             "type": "attribute",
             "prefix": "app",
-            "style": "camelCase"
+            "style": "camelCase",
+            "skipBlankLines": true
           }
         ]
       }
