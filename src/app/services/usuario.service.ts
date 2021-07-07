@@ -9,9 +9,9 @@ import { Usuario } from '../interfaces/usuario';
 
 export class UsuarioService {
 
-urlWeb = 'https://restaurante0contacto.herokuapp.com/api/autenticacion/'
+ urlWeb  = 'https://restaurante0contacto.herokuapp.com/api/'
 
-url = 'http://localhost:3000/api/'
+   url = 'http://localhost:3000/api/'
 
   constructor(
     private http: HttpClient
@@ -39,6 +39,17 @@ actualizarCliente(id:any,usuario:any):Observable<any>{
 obtenerUsuario(id:any):Observable<any>{
   return this.http.get(`${this.url}usuario/${id}`)
 }
+
+
+agregarCarritoProducto(ids:any):Observable<any>{
+  return this.http.post(`${this.url}usuario/agregar/`,ids)
+}
+
+eliminarCarritoProducto(ids:any){
+  return this.http.post(`${this.url}usuario/eliminar/`,ids)
+
+}
+
 
 
 }

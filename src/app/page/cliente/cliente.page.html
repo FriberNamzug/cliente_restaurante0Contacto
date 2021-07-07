@@ -1,90 +1,64 @@
-
 <!-- 
 
   Menu
 
  -->
-
-
 <ion-menu side="start" menuId="first" contentId="sideBar">
-    <ion-header>
-      <ion-toolbar>
-
-
-        <ion-item>
-
-          <ion-text>
-            <p>Bienvenido {{usuario.nombre}}</p>
-          </ion-text>
-
-          <ion-thumbnail slot="start">
-            <img [src]="usuario.imgPerfil">
-          </ion-thumbnail>
-
-        </ion-item>
-
-      </ion-toolbar>
-    </ion-header>
+  <ion-header>
+    <ion-toolbar>
+      <ion-item>
+        <ion-text>
+          <p>Bienvenido ((NOMBRE DE USUARIO))</p>
+        </ion-text>
+        <ion-thumbnail slot="start">
+          <img src="((IMG DE PERFIL))" alt="IMG DE PERFIL">
+        </ion-thumbnail>
+      </ion-item>
+    </ion-toolbar>
+  </ion-header>
     
+  <ion-content>     
+    <ion-list>
+      <ion-item (click)="verPerfil()" >
+        <ion-icon name="person-outline" slot="end"></ion-icon>
+        <ion-label>Mi perfil</ion-label>
+      </ion-item>
 
+      <ion-item (click)="historialPedidos()" >
+        <ion-icon name="bag-handle-outline" slot="end"></ion-icon>
+        <ion-label>Historial de pedidos</ion-label>
+      </ion-item>
 
-    
-    <ion-content>
+      <ion-item (click)="metodosPago()">
+        <ion-icon name="card-outline" slot="end"></ion-icon>
+        <ion-label>Métodos de pago</ion-label>
+      </ion-item>
 
+      <ion-item (click)="ayuda()">
+        <ion-icon name="help-outline" slot="end" ></ion-icon>
+        <ion-label>Ayuda</ion-label>
+      </ion-item>
+    </ion-list>
+  </ion-content>
 
-
-      
-
-        <ion-list>
-
-          <ion-item (click)="verPerfil()" >
-            <ion-icon name="person-outline" slot="end"></ion-icon>
-              <ion-label>Mi perfil</ion-label>
-          </ion-item>
-
-          <ion-item (click)="historialPedidos()" >
-                <ion-icon name="bag-handle-outline" slot="end"></ion-icon>
-                  <ion-label>Historial de pedidos</ion-label>
-          </ion-item>
-
-          <ion-item (click)="metodosPago()">
-            <ion-icon name="card-outline" slot="end"></ion-icon>
-            <ion-label>Métodos de pago</ion-label>
-          </ion-item>
-
-          <ion-item (click)="ayuda()">
-            <ion-icon name="help-outline" slot="end" ></ion-icon>
-              <ion-label>Ayuda</ion-label>
-          </ion-item>
-
-        </ion-list>
-
-
-    </ion-content>
-
-
-
-
-    <ion-footer>
-      <ion-toolbar>
-        <ion-item>
-          <ion-button (click)="acercaDe()" expand="block" >
-            <ion-icon slot="end" name="code-outline"></ion-icon>
-            <ion-label>Acerca de</ion-label>
-          </ion-button>
-        </ion-item> 
+  <ion-footer>
+    <ion-toolbar>
+      <ion-item>
+        <ion-button (click)="acercaDe()" expand="block" >
+          <ion-icon slot="end" name="code-outline"></ion-icon>
+          <ion-label>Acerca de</ion-label>
+        </ion-button>
+      </ion-item> 
   
-
-        <ion-item>
-          <ion-button color="warning" (click)="cerrarSesion()">
-            <ion-label>Cerrar Sesión</ion-label>
-            <ion-icon slot="icon-only" name="log-out-outline"></ion-icon>
-          </ion-button>
-        </ion-item>
-
-      </ion-toolbar>
-    </ion-footer>
-  </ion-menu>
+      <ion-item>
+        <ion-button color="warning" (click)="cerrarSesion()">
+          <ion-label>Cerrar Sesión</ion-label>
+          <ion-icon slot="icon-only" name="log-out-outline"></ion-icon>
+        </ion-button>
+      </ion-item>
+    </ion-toolbar>
+  </ion-footer>
+</ion-menu>
 
 
   
@@ -119,6 +93,7 @@
     </ion-tab-button>
 
     <ion-tab-button tab="checkout">
+      <ion-badge *ngIf="!checkCar" color="primary">{{cantidadCarrito.length}}</ion-badge>
       <ion-icon name="fast-food-outline"></ion-icon>
       <ion-label></ion-label>
     </ion-tab-button>

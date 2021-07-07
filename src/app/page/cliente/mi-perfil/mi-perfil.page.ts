@@ -5,6 +5,7 @@ import { AlertController, ToastController } from '@ionic/angular';
 import { UsuarioService } from '../../../services/usuario.service';
 import { Usuario } from '../../../interfaces/usuario';
 import { LoadingController } from '@ionic/angular';
+import { Plugin } from '@capacitor/core';
 @Component({
   selector: 'app-mi-perfil',
   templateUrl: './mi-perfil.page.html',
@@ -15,7 +16,7 @@ export class MiPerfilPage implements OnInit {
   formularioActualizacion: FormGroup
   usuario: Usuario
   carga = false
-  
+  photo
   constructor(
     public formBuilder: FormBuilder,
     public alertController: AlertController,
@@ -72,7 +73,7 @@ export class MiPerfilPage implements OnInit {
     })
   }
 
-
+ 
 
   actualizarDatos(){
 

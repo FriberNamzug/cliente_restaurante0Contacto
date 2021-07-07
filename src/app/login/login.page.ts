@@ -61,7 +61,7 @@ export class LoginPage implements OnInit {
 
     if(rol === 'cliente'){
 
-      localStorage.setItem('usuario',JSON.stringify(data.usuario.usuarioEncontrado._id)) //con localStorage guardamos el dato en el navegador
+      localStorage.setItem('usuario',data.usuario.usuarioEncontrado._id) //con localStorage guardamos el dato en el navegador
       //console.log(data)
       /* Una notificacion de bienvenido */
       this.toast(`Bienvenido ${data.usuario.usuarioEncontrado.nombre}`)
@@ -92,6 +92,7 @@ export class LoginPage implements OnInit {
    },error=>{
 
      this.alerta("Error",error.error.message)
+     this.formularioLogin.reset()
      console.log(error)
 
    })

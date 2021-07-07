@@ -5,6 +5,7 @@ import { AlertController } from '@ionic/angular';
 import { ToastController } from '@ionic/angular';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import { Usuario } from 'src/app/interfaces/usuario';
+import { ProductoService } from '../../services/producto.service';
 
 
 @Component({
@@ -12,55 +13,45 @@ import { Usuario } from 'src/app/interfaces/usuario';
   templateUrl: './cliente.page.html',
   styleUrls: ['./cliente.page.scss'],
 })
+
 export class ClientePage implements OnInit {
-
-  usuario: Usuario
-
+  usuario: Usuario []
+  cantidadCarrito: any
+  checkCar: Boolean = true
   constructor(
     private toastController: ToastController,
     private alertController: AlertController,
     private menu: MenuController,
     private router: Router,
-    private _serviceUsuario: UsuarioService
-
+    private _serviceUsuario: UsuarioService,
+    private _serviceProducto: ProductoService
   ) { }
 
   ngOnInit() {
 
-    this.usuario = {}
     this.obtenerUsuario()
+    this.cantidadCarrito = this._serviceProducto.carrito
+    this.validadorP()
+    console.log(this.usuario)
   }
 
 
- obtenerUsuario(){
-
+  async obtenerUsuario(){
     let idUsuario = JSON.parse(localStorage.getItem('usuario'))
     console.log("Tu Id de usuario: " + idUsuario)
-
-   this._serviceUsuario.obtenerUsuario(idUsuario).subscribe(data=>{
-
-
-    this.usuario = data.usuario
-
-    console.log(this.usuario)
-
-
+    await this._serviceUsuario.obtenerUsuario(idUsuario).subscribe(data=>{
+      this.usuario = data
     },error=>{
       console.log(error)
     })
-
   }
 
-
   cerrarSesion(){
-
     localStorage.removeItem('usuario')
     this.toast(`Hasta luego`)
-
     this.router.navigate(['/login'])
     this.menu.close()
     delete this.usuario 
-
   }
 
 
@@ -91,7 +82,14 @@ export class ClientePage implements OnInit {
     this.menu.close()
   }
 
+  
+  validadorP(){
 
+    if(this._serviceProducto.carrito.length >= 1){ 
+      this.checkCar = false
+      console.log('xddddd')
+    }
+  }
   ////////////////////////////////////////////////////
   //        Esto envia las alertas
   ////////////////////////////////////////////////////
