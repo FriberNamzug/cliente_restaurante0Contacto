@@ -9,8 +9,8 @@ import { Usuario } from '../interfaces/usuario';
 export class ProductoService {
 
   carrito = []
-  urlWeb = 'https://restaurante0contacto.herokuapp.com/api/productos/'
-  url = 'http://localhost:3000/api/productos/'
+  url = 'https://restaurante0contacto.herokuapp.com/api/productos/'
+  urlLocal = 'http://localhost:3000/api/productos/'
   constructor(
     private http: HttpClient
   ) { }

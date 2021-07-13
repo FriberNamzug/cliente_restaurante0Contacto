@@ -1,12 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { MenuController } from '@ionic/angular';
 import { Router } from '@angular/router';
-import { AlertController } from '@ionic/angular';
-import { ToastController } from '@ionic/angular';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import { Usuario } from 'src/app/interfaces/usuario';
 import { ProductoService } from '../../services/producto.service';
 
+import { ToastComponent } from '../../components/toast/toast.component';
+import { AlertComponent } from '../../components/alert/alert.component';
+import { LoadingComponent } from '../../components/loading/loading.component';
+import { UrlImgPerfilComponent } from '../../components/url-img-perfil/url-img-perfil.component';
 
 @Component({
   selector: 'app-cliente',
@@ -15,32 +17,42 @@ import { ProductoService } from '../../services/producto.service';
 })
 
 export class ClientePage implements OnInit {
-  usuario: Usuario []
-  cantidadCarrito: any
+  usuario: any = {}
+  cantidadCarrito: any = 0
   checkCar: Boolean = true
+  photoUploading: String
+
   constructor(
-    private toastController: ToastController,
-    private alertController: AlertController,
+    private toastComponent: ToastComponent,
+    private alertComponent: AlertComponent,
+    private loadingComponent: LoadingComponent,
+    public urlImgPerfilComponent: UrlImgPerfilComponent,
+
     private menu: MenuController,
     private router: Router,
-    private _serviceUsuario: UsuarioService,
-    private _serviceProducto: ProductoService
+    public _serviceUsuario: UsuarioService,
+    private _serviceProducto: ProductoService,
   ) { }
 
   ngOnInit() {
-
     this.obtenerUsuario()
-    this.cantidadCarrito = this._serviceProducto.carrito
-    this.validadorP()
-    console.log(this.usuario)
-  }
+}
 
 
-  async obtenerUsuario(){
-    let idUsuario = JSON.parse(localStorage.getItem('usuario'))
+ obtenerUsuario(){
+    let idUsuario = localStorage.getItem('usuario')
+
     console.log("Tu Id de usuario: " + idUsuario)
-    await this._serviceUsuario.obtenerUsuario(idUsuario).subscribe(data=>{
-      this.usuario = data
+
+    this._serviceUsuario.obtenerUsuario(idUsuario).subscribe(data=>{
+
+      
+      this.usuario = data.usuario
+      this.cantidadCarrito = data.usuario.carrito.length
+      this.photoUploading = this.urlImgPerfilComponent.urlCorrecta(this.usuario.imgPerfil)
+      console.log(this.usuario)
+
+      
     },error=>{
       console.log(error)
     })
@@ -48,13 +60,18 @@ export class ClientePage implements OnInit {
 
   cerrarSesion(){
     localStorage.removeItem('usuario')
-    this.toast(`Hasta luego`)
+    this.toastComponent.toast(`Hasta luego`)
     this.router.navigate(['/login'])
     this.menu.close()
     delete this.usuario 
   }
 
 
+  /* 
+  
+  OPCIONES MENU
+
+  */
   openMenu() {
     this.menu.enable(true, 'first');
     this.menu.open('first');
@@ -83,42 +100,14 @@ export class ClientePage implements OnInit {
   }
 
   
-  validadorP(){
-
-    if(this._serviceProducto.carrito.length >= 1){ 
+/*   validadorP(){
+    console.log(this.usuario)
+    if( 0 > 0){ 
       this.checkCar = false
       console.log('xddddd')
+    }else{
+      this.checkCar = true
     }
-  }
-  ////////////////////////////////////////////////////
-  //        Esto envia las alertas
-  ////////////////////////////////////////////////////
-  
-  async alerta(titulo:string,mensaje?:string){
-    const alert = await this.alertController.create({
-    cssClass: 'my-custom-class',
-    header: titulo,
-    message: mensaje,
-    buttons: ['OK']
-  });
-
-  await alert.present();
-
-}
-
-
-
-async toast(mensaje:string){
-
-  const toast = await this.toastController.create({
-    message: mensaje,
-    duration: 2000
-  });
-
-
-  await toast.present();
-}
-
-
+  } */
 
 }

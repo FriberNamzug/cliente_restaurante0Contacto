@@ -14,19 +14,38 @@
       </ion-col>
       
       <ion-col size="8">
-          <img [src]="this.usuario.imgPerfil">
+          <img [src]="this.photoUploading" *ngIf="!photo">
+          <img [src]="photo" *ngIf="photo" alt="No hay foto :C">
       </ion-col>
       
       <ion-col size="2"> 
 
         
       </ion-col>
-      <ion-button (click)="subirFoto()" expand="block" shape="round">
-        Sube tu foto
-                </ion-button>
-    </ion-row>
-  </ion-grid>
 
+
+        <ion-fab>
+          <ion-fab-button>
+            <ion-icon name="camera">Actualizar Foto</ion-icon>
+          </ion-fab-button>
+          <ion-fab-list side="bottom">
+
+
+
+            <ion-fab-button (click)="subirFoto()"><ion-icon name="add"></ion-icon></ion-fab-button>
+            <ion-fab-button (click)="obtenerGaleria()"><ion-icon name="image"></ion-icon></ion-fab-button>
+          
+          
+          
+          </ion-fab-list>
+        </ion-fab>
+
+
+        
+        
+      </ion-row>
+    </ion-grid>
+    
 
 
   <ion-card>

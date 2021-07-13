@@ -8,10 +8,10 @@
     <ion-toolbar>
       <ion-item>
         <ion-text>
-          <p>Bienvenido ((NOMBRE DE USUARIO))</p>
+          <p>Bienvenido {{usuario.nombre}}</p>
         </ion-text>
         <ion-thumbnail slot="start">
-          <img src="((IMG DE PERFIL))" alt="IMG DE PERFIL">
+          <img [src]="photoUploading" alt="IMG DE PERFIL">
         </ion-thumbnail>
       </ion-item>
     </ion-toolbar>
@@ -93,7 +93,8 @@
     </ion-tab-button>
 
     <ion-tab-button tab="checkout">
-      <ion-badge *ngIf="!checkCar" color="primary">{{cantidadCarrito.length}}</ion-badge>
+      <!-- *ngIf="!checkCar" -->
+      <ion-badge  color="primary">{{cantidadCarrito}}</ion-badge>
       <ion-icon name="fast-food-outline"></ion-icon>
       <ion-label></ion-label>
     </ion-tab-button>

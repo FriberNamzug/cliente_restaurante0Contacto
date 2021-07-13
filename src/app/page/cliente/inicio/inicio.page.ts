@@ -3,7 +3,8 @@ import { ProductoService } from '../../../services/producto.service';
 import { AlertController, ToastController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { UsuarioService } from 'src/app/services/usuario.service';
-
+import { AlertComponent } from '../../../components/alert/alert.component';
+import { ToastComponent } from '../../../components/toast/toast.component';
 @Component({
   selector: 'app-inicio',
   templateUrl: './inicio.page.html',
@@ -16,9 +17,9 @@ export class InicioPage implements OnInit {
   constructor(
     private _serviceProducto: ProductoService,
     private _serviceUsuario: UsuarioService,
-    private alertController: AlertController,
     private router: Router,
-    private toastController: ToastController
+    private AlertComponent: AlertComponent,
+    private ToastComponent: ToastComponent
   ) { }
 
   ngOnInit() {
@@ -36,7 +37,7 @@ export class InicioPage implements OnInit {
 
  async llevar(idProducto){
 
-  let idUsuario = JSON.parse(localStorage.getItem('usuario'))
+  let idUsuario = localStorage.getItem('usuario')
 
 let ids = {
   productoId: idProducto,
@@ -47,7 +48,7 @@ let ids = {
     await this._serviceUsuario.agregarCarritoProducto(ids).subscribe(data=>{
       this.carrito = data
       console.log(this.carrito)
-      this.toast("Agregado con exito!")
+      this.ToastComponent.toast("Agregado con exito!")
     },error=>{
       console.log(error)
     })
@@ -72,28 +73,6 @@ verMas(data){
 
   }
 
-////NOTIFICACIONES!!
 
-  async toast(mensaje:string){
 
-    const toast = await this.toastController.create({
-      message: mensaje,
-      duration: 500
-    });
-  
-  
-    await toast.present();
-  }
-
-  async alerta(titulo:string,mensaje?:string){
-    const alert = await this.alertController.create({
-    cssClass: 'my-custom-class',
-    header: titulo,
-    message: mensaje,
-    buttons: ['OK']
-  });
-
-  await alert.present();
-
-}
 }

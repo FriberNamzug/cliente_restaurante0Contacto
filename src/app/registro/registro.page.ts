@@ -4,6 +4,12 @@ import { Router } from '@angular/router';
 import { AlertController, ToastController } from '@ionic/angular';
 import { UsuarioService } from '../services/usuario.service';
 
+/* COMPONENTES */
+import { LoadingComponent } from '../components/loading/loading.component';
+import { AlertComponent } from '../components/alert/alert.component';
+import { ToastComponent } from '../components/toast/toast.component';
+
+
 @Component({
   selector: 'app-registro',
   templateUrl: './registro.page.html',
@@ -15,9 +21,10 @@ export class RegistroPage implements OnInit {
   check: boolean
 
   constructor(
-    
+    private loadingComponent: LoadingComponent,
+    private alertComponent: AlertComponent,
+
     public formBuilder: FormBuilder,
-    public alertController: AlertController,
     public router: Router,
     public _serviceUsuario: UsuarioService,
     public toastController: ToastController
@@ -40,48 +47,21 @@ export class RegistroPage implements OnInit {
   }
 
   async registro(){
+    this.loadingComponent.presentLoading('Validando datos...')
 
     const datos = this.formularioRegistro.value
     
     this._serviceUsuario.signup(datos).subscribe(data => {
 
-      console.log(data)
-      this.alerta(data.message,"Inicia sesion con tus datos que anteriormente registraste")
+      this.loadingComponent.loading.dismiss()
+      this.alertComponent.alerta(data.message,"Inicia sesion con tus datos que anteriormente registraste")
       this.router.navigate(['/login'])
 
     },error=>{
-      this.alerta("Error", error.error.message)
+      this.loadingComponent.loading.dismiss()
+      this.alertComponent.alerta("Error", error.error.message)
     })
 
-  }
-
-  ////////////////////////////////////////////////////
-  //        Esto envia las alertas
-  ////////////////////////////////////////////////////
-  
-  async alerta(titulo:string,mensaje?:string){
-      const alert = await this.alertController.create({
-      cssClass: 'my-custom-class',
-      header: titulo,
-      message: mensaje,
-      buttons: ['OK']
-    });
-
-    await alert.present();
-
-  }
-
-
-
-  async toast(mensaje:string){
-
-    const toast = await this.toastController.create({
-      message: mensaje,
-      duration: 2000
-    });
-
-
-    await toast.present();
   }
 
 

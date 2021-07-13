@@ -9,9 +9,14 @@ import { Usuario } from '../interfaces/usuario';
 
 export class UsuarioService {
 
- urlWeb  = 'https://restaurante0contacto.herokuapp.com/api/'
+  urlServidorLocal = "http://localhost:3000"
 
-   url = 'http://localhost:3000/api/'
+  urlServidor = "https://restaurante0contacto.herokuapp.com"
+
+
+url  = 'https://restaurante0contacto.herokuapp.com/api/'
+
+  as = 'http://localhost:3000/api/'
 
   constructor(
     private http: HttpClient
@@ -41,13 +46,29 @@ obtenerUsuario(id:any):Observable<any>{
 }
 
 
+
+subirActualizarImgPerfil(blobData,name,ext,id):Observable<any>{
+
+  const formData = new FormData()
+  formData.append('imagen', blobData, `${name}.${ext}`)
+
+  return this.http.put(`${this.url}usuario/upload/${id}`,formData)
+}
+
+
+
+
+
+
+
+/* aqui bajao se usa para los carritos de los productos */
+
 agregarCarritoProducto(ids:any):Observable<any>{
   return this.http.post(`${this.url}usuario/agregar/`,ids)
 }
 
 eliminarCarritoProducto(ids:any){
   return this.http.post(`${this.url}usuario/eliminar/`,ids)
-
 }
 
 
