@@ -16,7 +16,7 @@ export class ToastComponent implements OnInit {
 
     const toast = await this.toastController.create({
       message: mensaje,
-      duration: 2000
+      duration: 300
     });
   
   

@@ -1,0 +1,70 @@
+<ion-header>
+  <ion-toolbar>
+    
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="login"></ion-back-button>
+    </ion-buttons>
+ 
+
+    <ion-title>Crear una cuenta </ion-title>
+  
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <form [formGroup]="formularioRegistro">
+
+
+    <ion-item>
+      <ion-label  position="floating"> E-Mail: <ion-text color="danger">*</ion-text></ion-label>
+      <ion-input  required formControlName="email" placeholder="ejemplo@ejemplo.com" type="email"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating"> Password:<ion-text color="danger">*</ion-text></ion-label>
+      <ion-input  formControlName="password" type="password"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Confirma tu Password:<ion-text color="danger">*</ion-text></ion-label>
+      <ion-input required formControlName="confirmacionPasswordNew" type="password"></ion-input>
+      <div class="text-danger"*ngIf="validacionPassword()">
+        <span><strong>Las contraseñas no coinciden</strong></span></div>
+    </ion-item>
+    
+    <ion-item>
+      <ion-label position="floating">Nombre(s):<ion-text color="danger">*</ion-text></ion-label>
+      <ion-input required  formControlName="nombre" type="text"></ion-input>
+    </ion-item>
+    
+    <ion-item>
+      <ion-label position="floating"> Apellido(s):</ion-label>
+      <ion-input  formControlName="apellido" type="text"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Edad:</ion-label>
+      <ion-input  formControlName="edad" type="number"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked"> Telefono:<ion-text color="danger">*</ion-text></ion-label>
+      <ion-input required formControlName="telefono" type="text">+52 </ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label> Terminos y condiciones:<ion-text color="danger">*</ion-text></ion-label>
+      <ion-checkbox required color="primary" formControlName="terminosCondiciones" [(ngModel)]="check" ></ion-checkbox>
+    </ion-item>
+
+
+
+
+
+  </form>
+  <ion-button color="success" expand="block" (click)="registro()" [disabled]="formularioRegistro.invalid">
+    Crear Cuenta   
+    <ion-icon name="play-outline"></ion-icon>
+  </ion-button>
+
+</ion-content>

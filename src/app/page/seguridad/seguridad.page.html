@@ -1,0 +1,64 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Seguridad</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title class="centrar">Opciones de seguridad</ion-card-title>
+    </ion-card-header>
+  </ion-card>
+
+
+  <form [formGroup]="formularioActualizacion">
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title class="centrar">Actualizar password</ion-card-title>
+        
+<ion-card>
+        <ion-item>
+          <ion-label position="floating">Tu password anterior:<ion-text color="danger">*</ion-text></ion-label>
+          <ion-input required formControlName="passwordOld"  type="password"></ion-input>
+        </ion-item>
+</ion-card>
+
+<ion-card>
+<ion-item>
+  <ion-label position="floating">Tu nueva Password:<ion-text color="danger">*</ion-text></ion-label>
+  <ion-input required formControlName="password"  type="password"></ion-input>
+</ion-item>
+
+<ion-item>
+  <ion-label position="floating">Confirma tu Password:<ion-text color="danger">*</ion-text></ion-label>
+  <ion-input required formControlName="confirmacionPasswordNew"   type="password"></ion-input>
+  <div class="text-danger"*ngIf="validacionPassword()">
+    <span><strong>Las contraseñas no coinciden</strong></span></div>
+</ion-item>
+</ion-card>
+
+
+
+<ion-button (click)="actualizarPassword()" expand="block"  shape="round" [disabled]="formularioActualizacion.invalid">
+  Actualizar Password
+</ion-button>    
+
+    </ion-card-header>
+  </ion-card>
+ 
+  </form>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title class="centrar">Habilitar login en 2 pasos</ion-card-title>
+    </ion-card-header>
+    <ion-item>
+      <ion-label>Habilitar</ion-label>
+      <ion-toggle slot="end"></ion-toggle>
+    </ion-item>
+  </ion-card>
+
+</ion-content>

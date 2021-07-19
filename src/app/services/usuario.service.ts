@@ -9,14 +9,14 @@ import { Usuario } from '../interfaces/usuario';
 
 export class UsuarioService {
 
-  urlServidorLocal = "http://localhost:3000"
+ //urlServidor  = "http://localhost:3000"
 
-  urlServidor = "https://restaurante0contacto.herokuapp.com"
+ urlServidor  = "https://restaurante0contacto.herokuapp.com"
 
 
-url  = 'https://restaurante0contacto.herokuapp.com/api/'
+  url = 'https://restaurante0contacto.herokuapp.com/api/'
 
-  as = 'http://localhost:3000/api/'
+//  url = 'http://localhost:3000/api/'
 
   constructor(
     private http: HttpClient

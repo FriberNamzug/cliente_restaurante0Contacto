@@ -24,7 +24,7 @@ const routes: Routes = [
       },
       {
         path: 'mi-perfil',
-        loadChildren: () => import('./mi-perfil/mi-perfil.module').then( m => m.MiPerfilPageModule)
+        loadChildren: () => import('../mi-perfil/mi-perfil.module').then( m => m.MiPerfilPageModule)
       },
 
       {
@@ -40,6 +40,10 @@ const routes: Routes = [
         loadChildren: () => import('./ayuda/ayuda.module').then( m => m.AyudaPageModule)
       },
       {
+        path: 'seguridad',
+        loadChildren: () => import('../seguridad/seguridad.module').then( m => m.SeguridadPageModule)
+      },
+      {
         path: '',
         redirectTo: 'inicio',
         pathMatch: 'full'
@@ -47,23 +51,7 @@ const routes: Routes = [
     ]
   },
 
-  {
-    path: 'mi-perfil',
-    loadChildren: () => import('./mi-perfil/mi-perfil.module').then( m => m.MiPerfilPageModule)
-  },
-  {
-     path: 'historial-pedidos',
-     loadChildren: () => import('./historial-pedidos/historial-pedidos.module').then( m => m.HistorialPedidosPageModule)
-   },
-  
-  {
-    path: 'metodos-pago',
-    loadChildren: () => import('./metodos-pago/metodos-pago.module').then( m => m.MetodosPagoPageModule)
-  },
-  {
-    path: 'ayuda',
-    loadChildren: () => import('./ayuda/ayuda.module').then( m => m.AyudaPageModule)
-  },
+
 
 ];
 

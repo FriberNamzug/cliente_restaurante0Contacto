@@ -10,7 +10,8 @@ export class LoadingComponent implements OnInit {
 
   loading: any
 
-  constructor(private loadingController: LoadingController) { }  
+  constructor(private loadingController: LoadingController) { 
+  }  
 
   ngOnInit() {}
 

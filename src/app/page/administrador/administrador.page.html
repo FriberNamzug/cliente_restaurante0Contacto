@@ -1,9 +1,129 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>administrador</ion-title>
-  </ion-toolbar>
-</ion-header>
+<!-- 
 
-<ion-content>
+  Menu
 
-</ion-content>
+ -->
+ <ion-menu side="start" menuId="administrador" contentId="sideBar">
+   <div *ngIf="usuario">
+  <ion-header>
+    <ion-toolbar>
+      <ion-item>
+        <ion-text>
+            <p>Bienvenido {{usuario.nombre}} </p>
+        </ion-text>
+        <ion-thumbnail slot="start">
+          <img [src]="usuario?.imgPerfil">
+        </ion-thumbnail>
+      </ion-item>
+    </ion-toolbar>
+  </ion-header>
+</div>
+    
+  <ion-content>     
+    <ion-list>
+      <ion-item (click)="verPerfil()" >
+        <ion-icon name="person-outline" slot="end"></ion-icon>
+        <ion-label>Mi perfil</ion-label>
+      </ion-item>
+
+
+      <ion-item (click)="administrarClientes()" >
+        <ion-icon name="construct-outline" slot="end"></ion-icon>
+        <ion-label>Administrar Clientes</ion-label>
+      </ion-item>
+
+
+      <ion-item (click)="administrarEmpledos()" >
+        <ion-icon name="construct-outline" slot="end"></ion-icon>
+        <ion-label>Administrar Empleados</ion-label>
+      </ion-item>
+
+      <ion-item (click)="administrarProductos()" >
+        <ion-icon name="fast-food-outline" slot="end">numero</ion-icon>
+        <ion-label>Administrar Productos</ion-label>
+      </ion-item>
+
+      <ion-item (click)="estadisticas()" >
+        <ion-icon name="analytics-outline" slot="end"></ion-icon>
+        <ion-label>Estadisticas</ion-label>
+      </ion-item>
+
+
+      <ion-item (click)="mensajes()" >
+        <ion-icon name="chatbox-outline" slot="end"></ion-icon>
+        <ion-label>Mensajes</ion-label>
+      </ion-item>
+
+
+      <ion-item (click)="seguridad()" >
+        <ion-icon name="finger-print-outline" slot="end"></ion-icon>
+        <ion-label>Seguridad</ion-label>
+      </ion-item>
+
+
+      <ion-item (click)="ayuda()">
+        <ion-icon name="help-outline" slot="end" ></ion-icon>
+        <ion-label>Ayuda</ion-label>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+
+
+<!-- Footer del menu -->
+  <ion-footer>
+    <ion-toolbar>
+      
+      
+      <ion-item>
+        <ion-button color="warning" (click)="cerrarSesion()">
+          <ion-label>Cerrar Sesión</ion-label>
+          <ion-icon slot="icon-only" name="log-out-outline"></ion-icon>
+        </ion-button>
+      </ion-item>
+
+      
+    </ion-toolbar>
+  </ion-footer>
+</ion-menu>
+
+
+  
+<ion-router-outlet id="sideBar"></ion-router-outlet>
+
+
+
+<!-- 
+
+  Tabs
+
+ -->
+ <ion-tabs>
+  <ion-tab-bar slot="bottom">
+
+
+    <ion-tab-button (click)="openMenu()">
+      <ion-icon name="menu-outline"></ion-icon>
+      <ion-label></ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button tab="panel-control">
+      <ion-icon name="speedometer-outline"></ion-icon>
+      <ion-label></ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button tab="mensaje">
+      <ion-badge color="warning"></ion-badge>
+      <ion-icon name="chatbox-outline"></ion-icon>
+      <ion-label></ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button tab="estadistica">
+      <!-- *ngIf="!checkCar" -->
+      <ion-badge  color="primary"></ion-badge>
+      <ion-icon name="analytics-outline"></ion-icon>
+      <ion-label></ion-label>
+    </ion-tab-button>
+
+
+  </ion-tab-bar>
+</ion-tabs>

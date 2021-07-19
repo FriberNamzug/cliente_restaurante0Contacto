@@ -4,9 +4,6 @@
 
 <ion-content>
 
-  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
-    <ion-refresher-content></ion-refresher-content>
-  </ion-refresher>
 
   <ion-list *ngFor="let p of producto">
 
@@ -34,7 +31,7 @@
       </ion-item>
 <ion-item>
     <ion-button slot="start" (click)="llevar([p._id])"><ion-icon slot="start" name="add"></ion-icon>Llevar</ion-button>
-    <ion-button slot="end"   (click)="verMas([p._id])"><ion-icon slot="start" name="add"></ion-icon>Ver Más</ion-button>
+    <ion-button slot="end"   (click)="verMas(p._id)"><ion-icon slot="start" name="add"></ion-icon>Ver Más</ion-button>
 </ion-item>
 
     </ion-card>

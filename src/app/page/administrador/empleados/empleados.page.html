@@ -1,0 +1,64 @@
+<ion-content>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title style="text-align: center">Administracion de empleados</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+<p style="color: maroon; justify-content: center;">Desde este apartado podras agregar nuevos empleados,
+Ver la informacion del empleado y su estatus laboral.</p>
+<ion-card-subtitle  style="text-align: center">Referencias de status.</ion-card-subtitle>
+    <ion-item>
+        <ion-label >Laborando</ion-label>
+        <ion-icon  name="battery-full-outline"></ion-icon>
+      </ion-item>
+      <ion-item>
+        <ion-label >Break</ion-label>
+        <ion-icon name="battery-charging-outline"></ion-icon>
+      </ion-item>
+      <ion-item>
+        <ion-label >Descanso</ion-label>
+        <ion-icon name="battery-dead-outline"></ion-icon>
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Registrar Empleado</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+formulario de registro de usuario
+    </ion-card-content>
+  </ion-card>
+
+
+<ion-card>
+  <ion-card-header>
+    <ion-card-title>Empleados:</ion-card-title>
+  </ion-card-header>
+  <ion-card-content>
+
+    <ion-list>
+      <ion-item>
+        <ion-avatar slot="start">
+          <img src="https://images.unsplash.com/photo-1626291594967-eeb62d702df3" />
+        </ion-avatar>
+        <ion-label>NombreEmpleado</ion-label>
+        <ion-buttons slot="end">
+          <ion-button (click)="verEmpleado()"><ion-icon slot="start" name="add"></ion-icon>Ver</ion-button>
+        </ion-buttons>
+      </ion-item>
+  </ion-list>
+</ion-card-content>
+
+</ion-card>
+
+
+
+
+
+
+
+
+</ion-content>

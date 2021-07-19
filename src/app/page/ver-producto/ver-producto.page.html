@@ -1,0 +1,114 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{PRODUCTO.nombre}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+
+
+
+<ion-content>
+
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>{{PRODUCTO.descripcion}}</ion-card-title>
+      <ion-card-subtitle>Categoria: {{PRODUCTO.categoria}}</ion-card-subtitle>
+    </ion-card-header>
+
+    <ion-card-content>
+
+      <ion-img [src]="PRODUCTO.imagenUrl"></ion-img>    
+<ion-text class="ion-text-center" color="primary">
+  <h1>Precio: {{PRODUCTO.precio | currency}}</h1>
+</ion-text>
+
+</ion-card-content>
+  </ion-card>
+
+
+
+
+
+
+
+
+
+  <ion-card *ngIf="rolUsuario === 'administrador'">
+    <ion-card-header>
+      <ion-card-title>Actualizar Producto</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+
+      <form [formGroup]="formularioActualizacion">
+
+
+        <ion-item>
+          <ion-label  position="floating"> Nombre <ion-text color="danger">*</ion-text></ion-label>
+          <ion-input  required formControlName="nombre" placeholder="Dedos de queso.." type="text"></ion-input>
+        </ion-item>
+    
+
+        <ion-item>
+          <ion-label position="floating"> Descripcion:<ion-text color="danger">*</ion-text></ion-label>
+          <ion-textarea rows="4" cols="20" formControlName="descripcion" placeholder="4 piezas de ..."></ion-textarea>
+        </ion-item>
+
+
+        <ion-item>
+          <ion-label position="floating">Categoria:<ion-text color="danger">*</ion-text></ion-label>
+          <ion-input  formControlName="categoria" type="text"></ion-input>
+        </ion-item>
+        
+
+        <ion-item>
+          <ion-label position="floating">Precio:<ion-text color="danger">*</ion-text></ion-label>
+          <ion-input required  formControlName="precio" type="text">$</ion-input>
+        </ion-item>
+
+<!--         <ion-item>
+          <ion-label position="floating">Imagen:<ion-text color="danger">*</ion-text></ion-label>
+          <ion-button expand="block"  (click)="agregarImagen()"><ion-icon slot="end" name="add">Agregar imagen</ion-icon>
+          </ion-button>
+        </ion-item>
+-->
+    
+    
+    
+      </form>
+      <ion-button color="success" expand="block" (click)="actualizarProducto()" [disabled]="formularioActualizacion.invalid">
+Actualizar PRODUCTO        <ion-icon name="play-outline"></ion-icon>
+      </ion-button>
+
+
+
+
+
+    </ion-card-content>
+  </ion-card>
+
+
+
+
+
+
+
+
+
+
+
+
+</ion-content>
+
+
+
+
+
+
+<ion-footer>
+  <ion-toolbar>
+
+<ion-button expand="block" (click)="dismissModal()">
+  <ion-icon slot="start" name="close"></ion-icon> Cerrar </ion-button>
+  </ion-toolbar>
+</ion-footer>

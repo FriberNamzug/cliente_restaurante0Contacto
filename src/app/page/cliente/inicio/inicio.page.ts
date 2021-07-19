@@ -5,6 +5,9 @@ import { Router } from '@angular/router';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import { AlertComponent } from '../../../components/alert/alert.component';
 import { ToastComponent } from '../../../components/toast/toast.component';
+import { ModalController,IonRouterOutlet } from '@ionic/angular';
+import { VerProductoPage } from '../../ver-producto/ver-producto.page';
+
 @Component({
   selector: 'app-inicio',
   templateUrl: './inicio.page.html',
@@ -19,8 +22,13 @@ export class InicioPage implements OnInit {
     private _serviceUsuario: UsuarioService,
     private router: Router,
     private AlertComponent: AlertComponent,
-    private ToastComponent: ToastComponent
-  ) { }
+    private ToastComponent: ToastComponent,
+    public modalController: ModalController
+
+  ) { 
+
+
+  }
 
   ngOnInit() {
     this.obtenerProductos()
@@ -46,33 +54,28 @@ let ids = {
   console.log(`Usuario: ${idUsuario}. Producto: ${idProducto}`)
 
     await this._serviceUsuario.agregarCarritoProducto(ids).subscribe(data=>{
-      this.carrito = data
-      console.log(this.carrito)
+      
+      localStorage.setItem('carrito',data.productoAgregado.carrito.length)
       this.ToastComponent.toast("Agregado con exito!")
+
+
     },error=>{
       console.log(error)
     })
   }
 
-verMas(data){
+async verMas(data){
+
+    const modal = await this.modalController.create({
+      component: VerProductoPage,
+      cssClass: 'my-custom-class',
+      componentProps: {
+        'id': data,
+      }
+    });
+    return await modal.present();
 
 }
-
-
-
-  doRefresh(event){
-    console.log('Begin async operation');
-
-    setTimeout(() => {
-      window.location.reload();
-      console.log('Async operation has ended');
-      event.target.complete();
-    }, 2000);
-
-
-
-  }
-
 
 
 }

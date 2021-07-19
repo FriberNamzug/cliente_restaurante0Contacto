@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { MenuController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { UsuarioService } from 'src/app/services/usuario.service';
-import { Usuario } from 'src/app/interfaces/usuario';
 import { ProductoService } from '../../services/producto.service';
 
 import { ToastComponent } from '../../components/toast/toast.component';
@@ -19,7 +18,6 @@ import { UrlImgPerfilComponent } from '../../components/url-img-perfil/url-img-p
 export class ClientePage implements OnInit {
   usuario: any = {}
   cantidadCarrito: any = 0
-  checkCar: Boolean = true
   photoUploading: String
 
   constructor(
@@ -32,10 +30,16 @@ export class ClientePage implements OnInit {
     private router: Router,
     public _serviceUsuario: UsuarioService,
     private _serviceProducto: ProductoService,
-  ) { }
+  ) { 
+
+
+  }
 
   ngOnInit() {
-    this.obtenerUsuario()
+
+this.obtenerUsuario()
+this.cantidadCarrito = localStorage.getItem('carrito')
+
 }
 
 
@@ -46,13 +50,12 @@ export class ClientePage implements OnInit {
 
     this._serviceUsuario.obtenerUsuario(idUsuario).subscribe(data=>{
 
-      
       this.usuario = data.usuario
-      this.cantidadCarrito = data.usuario.carrito.length
       this.photoUploading = this.urlImgPerfilComponent.urlCorrecta(this.usuario.imgPerfil)
-      console.log(this.usuario)
+      console.log(data.usuario)
 
-      
+
+
     },error=>{
       console.log(error)
     })
@@ -99,15 +102,5 @@ export class ClientePage implements OnInit {
     this.menu.close()
   }
 
-  
-/*   validadorP(){
-    console.log(this.usuario)
-    if( 0 > 0){ 
-      this.checkCar = false
-      console.log('xddddd')
-    }else{
-      this.checkCar = true
-    }
-  } */
 
 }

@@ -4,11 +4,11 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 const routes: Routes = [
   {
     path: 'login',
-    loadChildren: () => import('./login/login.module').then( m => m.LoginPageModule)
+    loadChildren: () => import('./page/login/login.module').then( m => m.LoginPageModule)
   },
   {
     path: 'registro',
-    loadChildren: () => import('./registro/registro.module').then( m => m.RegistroPageModule)
+    loadChildren: () => import('./page/registro/registro.module').then( m => m.RegistroPageModule)
   },
   {
     path: 'cliente',
@@ -27,7 +27,18 @@ const routes: Routes = [
     redirectTo: 'login',
     pathMatch: 'full'
   },
-  
+  {
+    path: 'mi-perfil',
+    loadChildren: () => import('./page/mi-perfil/mi-perfil.module').then( m => m.MiPerfilPageModule)
+  },
+  {
+    path: 'seguridad',
+    loadChildren: () => import('./page/seguridad/seguridad.module').then( m => m.SeguridadPageModule)
+  },
+  {
+    path: 'ver-producto',
+    loadChildren: () => import('./page/ver-producto/ver-producto.module').then( m => m.VerProductoPageModule)
+  }
 
   
 ];

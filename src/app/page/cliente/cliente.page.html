@@ -8,7 +8,7 @@
     <ion-toolbar>
       <ion-item>
         <ion-text>
-          <p>Bienvenido {{usuario.nombre}}</p>
+          <p>Bienvenido cliente!!</p>
         </ion-text>
         <ion-thumbnail slot="start">
           <img [src]="photoUploading" alt="IMG DE PERFIL">
@@ -43,19 +43,23 @@
 
   <ion-footer>
     <ion-toolbar>
-      <ion-item>
-        <ion-button (click)="acercaDe()" expand="block" >
-          <ion-icon slot="end" name="code-outline"></ion-icon>
-          <ion-label>Acerca de</ion-label>
-        </ion-button>
-      </ion-item> 
-  
+      
+      
       <ion-item>
         <ion-button color="warning" (click)="cerrarSesion()">
           <ion-label>Cerrar Sesión</ion-label>
           <ion-icon slot="icon-only" name="log-out-outline"></ion-icon>
         </ion-button>
       </ion-item>
+
+      <ion-item>
+        <ion-button (click)="acercaDe()" expand="block" >
+          <ion-icon slot="end" name="code-outline"></ion-icon>
+          <ion-label>Acerca de</ion-label>
+        </ion-button>
+      </ion-item> 
+
+      
     </ion-toolbar>
   </ion-footer>
 </ion-menu>
@@ -101,4 +105,4 @@
 
 
   </ion-tab-bar>
-</ion-tabs>
+</ion-tabs> 

@@ -8,9 +8,9 @@ import { Usuario } from '../interfaces/usuario';
 })
 export class ProductoService {
 
-  carrito = []
-  url = 'https://restaurante0contacto.herokuapp.com/api/productos/'
-  urlLocal = 'http://localhost:3000/api/productos/'
+    url = 'https://restaurante0contacto.herokuapp.com/api/productos/'
+  //  url = 'http://localhost:3000/api/productos/'
+
   constructor(
     private http: HttpClient
   ) { }
@@ -23,16 +23,16 @@ obtenerProducto(id:any):Observable<any>{
   return this.http.get(`${this.url}${id}`)
 }
 
-crearProducto(){
-
+crearProducto(producto:any):Observable<any>{
+  return this.http.post(this.url,producto)
 }
 
-actualizarProducto(){
-
+actualizarProducto(id:any,producto:any):Observable<any>{
+  return this.http.put(`${this.url}${id}`,producto)
 }
 
-eliminarProducto(){
-
+eliminarProducto(id:any):Observable<any>{
+  return this.http.delete(`${this.url}${id}`)
 }
 
 
