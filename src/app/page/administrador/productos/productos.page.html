@@ -81,7 +81,7 @@ Crear nuevo producto
       <ion-card *ngFor="let p of PRODUCTOS">
         <ion-item >
           <ion-avatar slot="start">
-            <img [src]="p.imagenUrl" />
+            <img [src]="this.url.url + p.imagenUrl" />
           </ion-avatar>
           <ion-label>{{p.nombre}}</ion-label>
           <ion-buttons slot="end">

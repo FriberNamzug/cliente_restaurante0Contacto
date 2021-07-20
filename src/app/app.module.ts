@@ -10,8 +10,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { LoadingComponent } from './components/loading/loading.component';
 import { AlertComponent } from './components/alert/alert.component';
 import { ToastComponent } from './components/toast/toast.component';
-import { UrlImgPerfilComponent } from './components/url-img-perfil/url-img-perfil.component';
-
+import { Url } from './class/url';
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
@@ -21,7 +20,7 @@ import { UrlImgPerfilComponent } from './components/url-img-perfil/url-img-perfi
     AppRoutingModule,
     HttpClientModule,
   ],
-  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, LoadingComponent, AlertComponent, ToastComponent, UrlImgPerfilComponent],
+  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, LoadingComponent, AlertComponent, ToastComponent, Url],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

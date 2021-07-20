@@ -55,10 +55,7 @@ const routes: Routes = [
       },  
     ]
   },
-  {
-    path: 'editar-producto',
-    loadChildren: () => import('./editar-producto/editar-producto.module').then( m => m.EditarProductoPageModule)
-  },
+
 
 
 

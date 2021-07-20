@@ -13,17 +13,18 @@
 
 <ion-card>
     <ion-list>
-      <ion-item>
+      <ion-item *ngFor="let c of clientes">
         <ion-avatar slot="start">
-          <img src="https://images.unsplash.com/photo-1626291594967-eeb62d702df3" />
+          <img [src]="url.url + c.imgPerfil" />
         </ion-avatar>
-        <ion-label>NombreCliente</ion-label>
+        <ion-label>{{c.nombre}}</ion-label>
         <ion-buttons slot="end">
           <ion-button (click)="verCliente()"><ion-icon slot="start" name="add"></ion-icon>Ver</ion-button>
         </ion-buttons>
       </ion-item>
   </ion-list>
 </ion-card>
+
 
 
 

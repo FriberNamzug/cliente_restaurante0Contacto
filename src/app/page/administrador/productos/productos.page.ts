@@ -11,8 +11,9 @@ import { AlertComponent } from '../../../components/alert/alert.component';
 import { ToastComponent } from '../../../components/toast/toast.component';
 import { ProductoService } from '../../../services/producto.service';
 import { VerProductoPage } from '../../ver-producto/ver-producto.page';
-import { EditarProductoPage } from '../editar-producto/editar-producto.page';
 
+/* CLASES */
+import { Url } from '../../../class/url';
 
 @Component({
   selector: 'app-productos',
@@ -32,6 +33,7 @@ export class ProductosPage implements OnInit {
     public formBuilder: FormBuilder,
     private routerOutlet: IonRouterOutlet,
     public router: Router,
+    public url: Url,
 
     public _serviceUsuario: UsuarioService,
     public _serviceProducto: ProductoService,
@@ -41,7 +43,7 @@ export class ProductosPage implements OnInit {
     public modalController: ModalController
 
   ) { 
-
+ 
     this.formularioNuevoProducto = this.formBuilder.group({
       'nombre':    ["",Validators.required],
       'categoria':   ["",Validators.required],
@@ -125,6 +127,7 @@ export class ProductosPage implements OnInit {
     this._serviceProducto.obtenerProductos().subscribe(data=>{
       this.loadingComponent.loading.dismiss()
       this.PRODUCTOS = data.productos
+
      // console.log(data.productos)
     },error=>{
       this.loadingComponent.loading.dismiss()
@@ -171,9 +174,17 @@ export class ProductosPage implements OnInit {
       componentProps: {
         'id': this.PRODUCTO._id,
         'nombre': this.PRODUCTO.nombre
-      }
+      },
+      animated:true,
+      keyboardClose:true
     });
+    modal.onDidDismiss().then((data) => {
+      //console.log(data)
+      this.obtenerProductos()
+  });
+    
     return await modal.present();
+
   }
 
 

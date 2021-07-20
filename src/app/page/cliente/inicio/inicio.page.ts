@@ -7,7 +7,7 @@ import { AlertComponent } from '../../../components/alert/alert.component';
 import { ToastComponent } from '../../../components/toast/toast.component';
 import { ModalController,IonRouterOutlet } from '@ionic/angular';
 import { VerProductoPage } from '../../ver-producto/ver-producto.page';
-
+import { Url } from '../../../class/url';
 @Component({
   selector: 'app-inicio',
   templateUrl: './inicio.page.html',
@@ -23,7 +23,8 @@ export class InicioPage implements OnInit {
     private router: Router,
     private AlertComponent: AlertComponent,
     private ToastComponent: ToastComponent,
-    public modalController: ModalController
+    public modalController: ModalController,
+    public url: Url
 
   ) { 
 
@@ -75,6 +76,17 @@ async verMas(data){
     });
     return await modal.present();
 
+}
+
+
+doRefresh(event) {
+  console.log('Begin async operation');
+
+  setTimeout(() => {
+    console.log('Async operation has ended');
+    event.target.complete();
+    this.obtenerProductos()
+  }, 2000);
 }
 
 

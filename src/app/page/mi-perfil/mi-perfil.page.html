@@ -14,7 +14,7 @@
       </ion-col>
       
       <ion-col size="8">
-          <img [src]="this.photoUploading" *ngIf="!photo">
+          <img [src]="this.usuario.imgPerfil" *ngIf="!photo">
           <img [src]="photo" *ngIf="photo" alt="No hay foto :C">
       </ion-col>
       
@@ -30,12 +30,8 @@
           </ion-fab-button>
           <ion-fab-list side="bottom">
 
-
-
             <ion-fab-button (click)="subirFoto()"><ion-icon name="add"></ion-icon></ion-fab-button>
             <ion-fab-button (click)="obtenerGaleria()"><ion-icon name="image"></ion-icon></ion-fab-button>
-          
-          
           
           </ion-fab-list>
         </ion-fab>
@@ -79,14 +75,14 @@
       <ion-input formControlName="edad" type="number" placeholder="20"></ion-input>
     </ion-item>
     
-    <ion-item>
+    <ion-item *ngIf="rolUsuario !== 'administrador'">
       <ion-label>Recibir promociones:</ion-label>
       <ion-toggle formControlName="recibirPromociones"  color="primary"></ion-toggle>
     </ion-item>
     
   </form>
 <ion-button (click)="actualizarDatos()" expand="block" fill="clear" shape="round">
-  Guardar
+  Guardar 
 </ion-button>    
     
   </ion-list>

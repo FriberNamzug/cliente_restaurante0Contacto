@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import {  FormGroup,  FormControl,  Validators,  FormBuilder, Form} from '@angular/forms'
+import {  FormGroup, Validators,  FormBuilder, Form} from '@angular/forms'
 import { Router } from '@angular/router';
-import { AlertController, ToastController } from '@ionic/angular';
-import { UsuarioService } from '../../services/usuario.service';
 import { PasswordService, validacionPasswordPair } from '../../services/password.service';
+import { AutenticacionService } from '../../services/autenticacion.service';
 
 /* COMPONENTES */
 import { LoadingComponent } from '../../components/loading/loading.component';
@@ -27,8 +26,7 @@ export class RegistroPage implements OnInit {
 
     public formBuilder: FormBuilder,
     public router: Router,
-    public _serviceUsuario: UsuarioService,
-    public toastController: ToastController
+    public _serviceAutenticacion: AutenticacionService,
   ) { 
 
     this.formularioRegistro = this.formBuilder.group({
@@ -57,7 +55,7 @@ export class RegistroPage implements OnInit {
 
     const datos = this.formularioRegistro.value
     
-    this._serviceUsuario.signup(datos).subscribe(data => {
+    this._serviceAutenticacion.signup(datos).subscribe(data => {
 
       this.loadingComponent.loading.dismiss()
       this.alertComponent.alerta(data.message,"Inicia sesion con tus datos que anteriormente registraste")

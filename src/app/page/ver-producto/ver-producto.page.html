@@ -18,18 +18,28 @@
 
     <ion-card-content>
 
+      <ion-fab *ngIf="rolUsuario === 'administrador'">
+        <ion-fab-button>
+          <ion-icon name="camera">Actualizar Foto</ion-icon>
+        </ion-fab-button>
+        <ion-fab-list side="top">
+          <ion-fab-button (click)="subirFoto()"><ion-icon name="add"></ion-icon></ion-fab-button>
+          <ion-fab-button (click)="obtenerGaleria()"><ion-icon name="image"></ion-icon></ion-fab-button>
+        </ion-fab-list>
+      </ion-fab>
+
       <ion-img [src]="PRODUCTO.imagenUrl"></ion-img>    
 <ion-text class="ion-text-center" color="primary">
   <h1>Precio: {{PRODUCTO.precio | currency}}</h1>
 </ion-text>
 
+
+
+
+
+
 </ion-card-content>
   </ion-card>
-
-
-
-
-
 
 
 

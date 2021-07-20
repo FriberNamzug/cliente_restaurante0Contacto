@@ -1,9 +1,16 @@
 <ion-header>
 <ion-label>Pendiente***</ion-label>
+
+
+
+
+
 </ion-header>
 
 <ion-content>
-
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
 
   <ion-list *ngFor="let p of producto">
 
@@ -23,7 +30,7 @@
   <!-- Imagen v -->
   <ion-col size="12">
     <ion-card-content>
-      <ion-img [src]="p.imagenUrl"></ion-img>
+      <ion-img [src]="this.url.url + p.imagenUrl"></ion-img>
     </ion-card-content> 
   </ion-col>
 </ion-row>

@@ -38,6 +38,14 @@ const routes: Routes = [
   {
     path: 'ver-producto',
     loadChildren: () => import('./page/ver-producto/ver-producto.module').then( m => m.VerProductoPageModule)
+  },
+  {
+    path: 'ver-cliente',
+    loadChildren: () => import('./page/ver-cliente/ver-cliente.module').then( m => m.VerClientePageModule)
+  },
+  {
+    path: 'ver-empleado',
+    loadChildren: () => import('./page/ver-empleado/ver-empleado.module').then( m => m.VerEmpleadoPageModule)
   }
 
   

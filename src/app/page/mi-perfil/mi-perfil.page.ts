@@ -5,11 +5,10 @@ import { UsuarioService } from '../../services/usuario.service';
 import { Usuario } from '../../interfaces/usuario';
 import { CameraSource ,CameraResultType, Camera} from '@capacitor/camera';
 import { DomSanitizer, SafeResourceUrl, } from '@angular/platform-browser';
-
 import { LoadingComponent } from '../../components/loading/loading.component';
 import { AlertComponent } from '../../components/alert/alert.component';
 import { ToastComponent } from '../../components/toast/toast.component';
-import { UrlImgPerfilComponent } from '../../components/url-img-perfil/url-img-perfil.component';
+import { Url } from '../../class/url';
 
 
 @Component({
@@ -20,22 +19,22 @@ import { UrlImgPerfilComponent } from '../../components/url-img-perfil/url-img-p
 export class MiPerfilPage implements OnInit {
 
   formularioActualizacion: FormGroup
-  photoUploading: String
-  urlServidor: String = this._serviceUsuario.urlServidor
   usuario: any = {}
   carga = false
   photo: SafeResourceUrl
+  rolUsuario: string
 
   constructor(
     private toastComponent: ToastComponent,
     private alertComponent: AlertComponent,
     public loadingComponent: LoadingComponent,
-    public urlImgPerfilComponent: UrlImgPerfilComponent,
 
     public domSanitizer: DomSanitizer,
     public formBuilder: FormBuilder,
     public router: Router,
+    public url: Url,
     public _serviceUsuario: UsuarioService,
+
 
   ) {
     this.formularioActualizacion = this.formBuilder.group({
@@ -51,7 +50,8 @@ export class MiPerfilPage implements OnInit {
 
   ngOnInit() {
     this.obtenerUsuario()
-    this.photoUploading
+    this.rolUsuario = localStorage.getItem('rol')
+
   }
 
   async obtenerUsuario(){
@@ -71,9 +71,7 @@ await   this.loadingComponent.presentLoading('Cargando datos de usuario')
       telefono: this.usuario.telefono,
       recibirPromociones: this.usuario.recibirPromociones
     })
-
-  this.photoUploading = this.urlImgPerfilComponent.urlCorrecta(this.usuario.imgPerfil)
-  
+  this.usuario.imgPerfil = this.url.url + this.usuario.imgPerfil
 },error=>{
       this.loadingComponent.loading.dismiss()
       this.alertComponent.alerta("error",error)
@@ -122,8 +120,8 @@ async  actualizarDatos(){
   this._serviceUsuario.subirActualizarImgPerfil(blobData,imageName,image.format,this.usuario._id).subscribe(data=>{
       
       this.loadingComponent.loading.dismiss()
-      this.photoUploading =  this.urlImgPerfilComponent.urlCorrecta(data.rutaImg)
-    
+      this.obtenerUsuario()
+
     
     },error =>{
 

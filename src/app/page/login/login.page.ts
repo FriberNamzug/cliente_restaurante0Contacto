@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import {  FormGroup,  FormControl,  Validators,  FormBuilder, Form} from '@angular/forms'
 import { Router } from '@angular/router';
-import { UsuarioService } from '../../services/usuario.service';
 import { LoadingComponent } from '../../components/loading/loading.component';
 import { AlertComponent } from '../../components/alert/alert.component';
 import { ToastComponent } from '../../components/toast/toast.component';
+import { AutenticacionService } from '../../services/autenticacion.service';
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
@@ -18,10 +18,10 @@ export class LoginPage implements OnInit {
   constructor(
     public formBuilder: FormBuilder,
     public router: Router,
-    public _serviceUsuario: UsuarioService,
     private toastComponent: ToastComponent,
     private loadingComponent: LoadingComponent,
-    private alertComponent: AlertComponent
+    private alertComponent: AlertComponent,
+    public _serviceAutenticacion: AutenticacionService
     ) { 
 
       this.formularioLogin = this.formBuilder.group({
@@ -50,7 +50,7 @@ export class LoginPage implements OnInit {
 
   let datos = this.formularioLogin.value
   
-  this._serviceUsuario.signin(datos).subscribe(data=>{
+  this._serviceAutenticacion.signin(datos).subscribe(data=>{
     let rol = data.usuario.usuarioEncontrado.rol
     localStorage.setItem('usuario',data.usuario.usuarioEncontrado._id) 
     localStorage.setItem('rol',data.usuario.usuarioEncontrado.rol) 

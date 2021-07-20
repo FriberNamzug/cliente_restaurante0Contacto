@@ -4,7 +4,6 @@ import { MenuController } from '@ionic/angular';
 import { AlertComponent } from 'src/app/components/alert/alert.component';
 import { LoadingComponent } from 'src/app/components/loading/loading.component';
 import { ToastComponent } from 'src/app/components/toast/toast.component';
-import { UrlImgPerfilComponent } from 'src/app/components/url-img-perfil/url-img-perfil.component';
 
 @Component({
   selector: 'app-empleado',
@@ -18,7 +17,6 @@ export class EmpleadoPage implements OnInit {
     private toastComponent: ToastComponent,
     private alertComponent: AlertComponent,
     private loadingComponent: LoadingComponent,
-    public urlImgPerfilComponent: UrlImgPerfilComponent,
 
     private menu: MenuController,
     private router: Router,

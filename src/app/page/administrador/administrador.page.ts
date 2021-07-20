@@ -4,9 +4,8 @@ import { MenuController } from '@ionic/angular';
 import { AlertComponent } from 'src/app/components/alert/alert.component';
 import { LoadingComponent } from 'src/app/components/loading/loading.component';
 import { ToastComponent } from 'src/app/components/toast/toast.component';
-import { UrlImgPerfilComponent } from 'src/app/components/url-img-perfil/url-img-perfil.component';
 import { UsuarioService } from '../../services/usuario.service';
-
+import { Url } from '../../class/url';
 @Component({
   selector: 'app-administrador',
   templateUrl: './administrador.page.html',
@@ -20,8 +19,7 @@ export class AdministradorPage implements OnInit {
     private toastComponent: ToastComponent,
     private alertComponent: AlertComponent,
     private loadingComponent: LoadingComponent,
-    public urlImgPerfilComponent: UrlImgPerfilComponent,
-
+    public url: Url,
     private _serviceUsuario: UsuarioService,
     private menu: MenuController,
     private router: Router,
@@ -35,8 +33,7 @@ export class AdministradorPage implements OnInit {
 datosUsuario(){
   this._serviceUsuario.obtenerUsuario(localStorage.getItem('usuario')).subscribe(data=>{
     this.usuario.nombre = data.usuario.nombre
-    this.usuario.nombre =  localStorage.getItem('nombre') 
-    this.usuario.imgPerfil = this.urlImgPerfilComponent.urlCorrecta(data.usuario.imgPerfil) 
+    this.usuario.imgPerfil = this.url.url + data.usuario.imgPerfil
 
   },error=>{
     this.alertComponent.alerta('Error',error.error)

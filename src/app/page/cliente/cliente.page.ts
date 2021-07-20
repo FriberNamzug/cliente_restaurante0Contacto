@@ -7,7 +7,6 @@ import { ProductoService } from '../../services/producto.service';
 import { ToastComponent } from '../../components/toast/toast.component';
 import { AlertComponent } from '../../components/alert/alert.component';
 import { LoadingComponent } from '../../components/loading/loading.component';
-import { UrlImgPerfilComponent } from '../../components/url-img-perfil/url-img-perfil.component';
 
 @Component({
   selector: 'app-cliente',
@@ -24,7 +23,6 @@ export class ClientePage implements OnInit {
     private toastComponent: ToastComponent,
     private alertComponent: AlertComponent,
     private loadingComponent: LoadingComponent,
-    public urlImgPerfilComponent: UrlImgPerfilComponent,
 
     private menu: MenuController,
     private router: Router,
@@ -51,7 +49,7 @@ this.cantidadCarrito = localStorage.getItem('carrito')
     this._serviceUsuario.obtenerUsuario(idUsuario).subscribe(data=>{
 
       this.usuario = data.usuario
-      this.photoUploading = this.urlImgPerfilComponent.urlCorrecta(this.usuario.imgPerfil)
+      this.photoUploading = this.usuario.imgPerfil
       console.log(data.usuario)
 
 
