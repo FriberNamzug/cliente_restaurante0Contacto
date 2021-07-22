@@ -1,0 +1,84 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Cuenta de {{cliente.nombre + ' ' + cliente.apellido}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+<ion-card>
+  <ion-card-header>
+    <ion-img [src]="url.url + cliente.imgPerfil"></ion-img>
+    <ion-card-title>Informacion de {{cliente.nombre + ' ' + cliente.apellido}}</ion-card-title>
+  </ion-card-header>
+  <ion-card-content>
+
+      <ion-item>
+        <ion-text >
+          <p>Nombre: {{cliente.nombre}}</p>
+        </ion-text>
+      </ion-item>
+
+      <ion-item>
+        <ion-text >
+          <p>Apellido(s): {{cliente.apellido}}</p>
+        </ion-text>
+      </ion-item>
+
+      <ion-item>
+        <ion-text >
+          <p>E-Mail: {{cliente.email}}</p>
+        </ion-text>
+      </ion-item>
+
+      <ion-item>
+        <ion-text >
+          <p>Telefono: {{cliente.telefono}}</p>
+        </ion-text>
+      </ion-item>
+
+      <ion-item>
+        <ion-text >
+          <p>Recibir Promociones: {{cliente.recibirPromociones}}</p>
+        </ion-text>
+      </ion-item>
+
+      <ion-item>
+        <ion-text >
+          <p>Terminos y condiciones: {{cliente.terminosCondiciones}}</p>
+        </ion-text>
+      </ion-item>
+
+
+    </ion-card-content>
+</ion-card>
+
+<ion-card>
+  <ion-card-header>
+    <ion-card-title>Carrito de compras</ion-card-title>
+  </ion-card-header>
+  <ion-card-content>
+Proximamente
+  </ion-card-content>
+</ion-card>
+<ion-card>
+  <ion-card-header>
+    <ion-card-title>Historial de pedidos</ion-card-title>
+  </ion-card-header>
+  <ion-card-content>
+Proximamente
+  </ion-card-content>
+</ion-card>
+
+
+</ion-content>
+
+
+<ion-footer>
+  <ion-toolbar>
+
+<ion-button expand="block" (click)="dismissModal()">
+  <ion-icon slot="start" name="close"></ion-icon> Cerrar </ion-button>
+  </ion-toolbar>
+</ion-footer>
+

@@ -9,7 +9,9 @@ import { LoadingComponent } from '../../components/loading/loading.component';
 import { AlertComponent } from '../../components/alert/alert.component';
 import { ToastComponent } from '../../components/toast/toast.component';
 import { Url } from '../../class/url';
-
+import { Platform } from '@ionic/angular';
+import { Toast } from '@ionic-native/toast/ngx';
+import { SpinnerDialog } from '@ionic-native/spinner-dialog/ngx';
 
 @Component({
   selector: 'app-mi-perfil',
@@ -23,6 +25,7 @@ export class MiPerfilPage implements OnInit {
   carga = false
   photo: SafeResourceUrl
   rolUsuario: string
+  tiempoToast: string = '2000'
 
   constructor(
     private toastComponent: ToastComponent,
@@ -35,6 +38,9 @@ export class MiPerfilPage implements OnInit {
     public url: Url,
     public _serviceUsuario: UsuarioService,
 
+    private spinnerDialog: SpinnerDialog,
+    private toast: Toast,
+    public platform: Platform
 
   ) {
     this.formularioActualizacion = this.formBuilder.group({
@@ -51,17 +57,29 @@ export class MiPerfilPage implements OnInit {
   ngOnInit() {
     this.obtenerUsuario()
     this.rolUsuario = localStorage.getItem('rol')
-
+ 
   }
 
-  async obtenerUsuario(){
+ obtenerUsuario(){
 
-await   this.loadingComponent.presentLoading('Cargando datos de usuario')
+    if(this.platform.is('android')){
+      this.spinnerDialog.show();
+    }else{
+      this.loadingComponent.presentLoading('Cargando datos de usuario')
+    }
+
 
   let idUsuario = localStorage.getItem('usuario')
 
   this._serviceUsuario.obtenerUsuario(idUsuario).subscribe(data=>{
-    this.loadingComponent.loading.dismiss()
+
+    if(this.platform.is('android')){
+      this.spinnerDialog.hide();
+    }else{
+      this.loadingComponent.loading.dismiss()
+    }
+
+
     this.usuario = data.usuario
     this.formularioActualizacion.setValue({
       email: this.usuario.email,
@@ -73,7 +91,13 @@ await   this.loadingComponent.presentLoading('Cargando datos de usuario')
     })
   this.usuario.imgPerfil = this.url.url + this.usuario.imgPerfil
 },error=>{
-      this.loadingComponent.loading.dismiss()
+
+  if(this.platform.is('android')){
+    this.spinnerDialog.hide();
+  }else{
+    this.loadingComponent.loading.dismiss()
+  }
+
       this.alertComponent.alerta("error",error)
       console.log(error)
     })
@@ -81,22 +105,35 @@ await   this.loadingComponent.presentLoading('Cargando datos de usuario')
 
 
 
-async  actualizarDatos(){
-   await this.loadingComponent.presentLoading('Actualizando datos de usuario')
+ actualizarDatos(){
+  
+    this.loadingComponent.presentLoading('Actualizando datos de usuario')
 
     const datos = this.formularioActualizacion.value
 
     this._serviceUsuario.actualizarCliente(this.usuario._id,datos).subscribe(data=>{
-      console.log(data)
+
+
+      if(this.platform.is('android')){
+        this.toast.show(`${data.message}`, this.toastComponent.tiempo, this.toastComponent.tiempo).subscribe(
+          toast => {
+            console.log(toast);
+          }
+        )
+      }else{
+        this.toastComponent.toast(data.message)
+      }
+      
       this.loadingComponent.loading.dismiss()
-      this.toastComponent.toast(data.message)
       this.obtenerUsuario()
 
     },error=>{
-
+      if(this.platform.is('android')){
+        this.toast.show(`error: ${error}`, this.toastComponent.tiempo, this.toastComponent.ubicacion)
+      }else{
+        this.alertComponent.alerta("error",error)
+      }
       this.loadingComponent.loading.dismiss()
-      this.alertComponent.alerta("error",error)
-      console.log(error)
     })
 
   }
@@ -111,34 +148,27 @@ async  actualizarDatos(){
       resultType: CameraResultType.Base64,
       source: CameraSource.Camera
     })
-    this.loadingComponent.presentLoading('Actualizando Fotografia')
+    this.spinnerDialog.show();
 
   console.log('Imagen: ', image)
   const blobData = this.b64toBlob(image.base64String, `image/${image.format}`)    
   const imageName = 'nombreQueLePonemosantes de la extension'
   
   this._serviceUsuario.subirActualizarImgPerfil(blobData,imageName,image.format,this.usuario._id).subscribe(data=>{
-      
-      this.loadingComponent.loading.dismiss()
       this.obtenerUsuario()
+      this.spinnerDialog.hide();
 
     
     },error =>{
-
-      this.loadingComponent.loading.dismiss()
+      this.spinnerDialog.hide();
       this.alertComponent.alerta('error',error)
-      console.error(error)
     })
-    
 
   } 
 
 
-
-
   obtenerGaleria(){
-    this.alertComponent.alerta('En mantenimiento','Proximamente podras seleccionar una foto personalizada!')
-    
+    this.toast.show('Proximamente!!', this.tiempoToast,'bottom')    
   }
 
 

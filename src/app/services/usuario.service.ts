@@ -24,7 +24,7 @@ export class UsuarioService {
   
   
   obtenerUsuario(id:any):Observable<any>{
-    return this.http.get(`${this.url.url}${this.adicion}usuario/${id}`)
+    return this.http.get(`${this.url.url}${this.adicion}/${id}`)
   }
   
   
@@ -51,6 +51,17 @@ subirActualizarImgPerfil(blobData,name,ext,id):Observable<any>{
 }
 
 
+deshabilitarUsuario(id:any):Observable<any>{
+  return this.http.delete(`${this.url.url}${this.adicion}${id}`)
+}
+
+habilitarClienteEmpleado(id:any):Observable<any>{
+  return this.http.put(`${this.url.url}${this.adicion}habilitar/${id}`,id)
+}
+
+obtenerClientesDeshabilitados():Observable<any>{
+  return this.http.get(`${this.url.url}${this.adicion}clientes/deshabilitado/`)
+}
 
 
 

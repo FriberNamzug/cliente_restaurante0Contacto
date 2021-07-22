@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { AdministradorPage } from './administrador.page';
+import { VerClientePageModule } from './ver-cliente/ver-cliente.module';
 
 const routes: Routes = [
   {
@@ -55,7 +56,10 @@ const routes: Routes = [
       },  
     ]
   },
-
+  {
+    path: 'mi-perfil',
+    loadChildren: () => import('./ver-cliente/ver-cliente.module').then( m => m.VerClientePageModule)
+  },
 
 
 

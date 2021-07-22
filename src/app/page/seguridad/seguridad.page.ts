@@ -10,6 +10,8 @@ import { LoadingComponent } from '../../components/loading/loading.component';
 import { AlertComponent } from '../../components/alert/alert.component';
 import { ToastComponent } from '../../components/toast/toast.component';
 
+/* NATIVE */
+import { TouchID } from '@ionic-native/touch-id/ngx';
 
 @Component({
   selector: 'app-seguridad',
@@ -24,7 +26,7 @@ export class SeguridadPage implements OnInit {
 
     private loadingComponent: LoadingComponent,
     private alertComponent: AlertComponent,
-
+    private touchId: TouchID,
     public formBuilder: FormBuilder,
     public router: Router,
     public _serviceUsuario: UsuarioService,
@@ -43,6 +45,23 @@ export class SeguridadPage implements OnInit {
 
 
   ngOnInit() {
+
+    this.touchId.isAvailable()
+  .then(
+    res => console.log('TouchID is available!'),
+    err => console.error('TouchID is not available', err)
+  );
+    
+
+  }
+
+
+  boton(){
+    this.touchId.verifyFingerprint('Scan your fingerprint please')
+    .then(
+      res => console.log('Ok', res),
+      err => console.error('Error', err)
+    );
   }
 
   actualizarPassword(){

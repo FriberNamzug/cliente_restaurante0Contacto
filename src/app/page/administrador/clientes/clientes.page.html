@@ -1,5 +1,19 @@
 <ion-content>
 
+  
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content
+      pullingIcon="chevron-down-circle-outline"
+      pullingText="Pull to refresh"
+      refreshingSpinner="circles"
+      refreshingText="Refreshing...">
+      <ion-progress-bar type="indeterminate"></ion-progress-bar>
+    </ion-refresher-content>
+    
+  </ion-refresher>
+
+
+
   <ion-card>
     <ion-card-header>
       <ion-card-title>Administracion de clientes</ion-card-title>
@@ -11,7 +25,7 @@
   </ion-card>
 
 
-<ion-card>
+<ion-card *ngIf="clientVal > 0">
     <ion-list>
       <ion-item *ngFor="let c of clientes">
         <ion-avatar slot="start">
@@ -19,16 +33,55 @@
         </ion-avatar>
         <ion-label>{{c.nombre}}</ion-label>
         <ion-buttons slot="end">
-          <ion-button (click)="verCliente()"><ion-icon slot="start" name="add"></ion-icon>Ver</ion-button>
+          <ion-button (click)="opcionesCliente(c._id)"><ion-icon slot="start" name="add"></ion-icon>Más</ion-button>
         </ion-buttons>
       </ion-item>
   </ion-list>
 </ion-card>
 
+<ion-card *ngIf="clientVal == 0">
+  <ion-card-header>
+    <ion-card-title>Aun no hay clientes registrados registrados</ion-card-title>
+  </ion-card-header>
+</ion-card>
+
+<!-- 
 
 
+ -->
+<ion-card>
+  <ion-card-header>
+    <ion-card-title>Cuentas deshabilitadas</ion-card-title>
+  </ion-card-header>
+  <ion-card-content>
+    
+  <ion-button (click)="mostrarDeshabilitados()" expand="block"  shape="round">
+{{textoMostar_ocultar}}  
+</ion-button>
+  </ion-card-content>
+</ion-card>
 
-
+<div *ngIf="mostrar_ocultar">
+  <ion-card>
+    <ion-list>
+      <ion-item *ngFor="let c of clientesDeshabilitados">
+        <ion-avatar slot="start">
+          <img [src]="url.url + c.imgPerfil" />
+        </ion-avatar>
+        <ion-label>{{c.nombre}}</ion-label>
+        <ion-buttons slot="end">
+          <ion-button (click)="habilitarCliente(c._id)"><ion-icon slot="start" name="add"></ion-icon>Habilitar</ion-button>
+        </ion-buttons>
+      </ion-item>
+    </ion-list>
+  </ion-card>
+</div>
+  
+  
+  
+  
+  
+  
 
 
 

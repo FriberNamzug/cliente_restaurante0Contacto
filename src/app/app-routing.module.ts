@@ -41,7 +41,7 @@ const routes: Routes = [
   },
   {
     path: 'ver-cliente',
-    loadChildren: () => import('./page/ver-cliente/ver-cliente.module').then( m => m.VerClientePageModule)
+    loadChildren: () => import('./page/administrador/ver-cliente/ver-cliente.module').then( m => m.VerClientePageModule)
   },
   {
     path: 'ver-empleado',
