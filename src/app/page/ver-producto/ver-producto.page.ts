@@ -1,13 +1,13 @@
 import { Component, Input, OnInit, } from '@angular/core';
 import { ModalController, } from '@ionic/angular';
 import { ProductoService } from '../../services/producto.service';
-import { LoadingComponent } from '../../components/loading/loading.component';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AlertComponent } from '../../components/alert/alert.component';
 import { ToastComponent } from '../../components/toast/toast.component';
-import { UsuarioService } from '../../services/usuario.service';
 import { CameraSource ,CameraResultType, Camera} from '@capacitor/camera';
 import { Url } from '../../class/url';
+import { Toast } from '@ionic-native/toast/ngx';
+import { SpinnerDialog } from '@ionic-native/spinner-dialog/ngx';
 
 @Component({
   selector: 'app-ver-producto',
@@ -27,13 +27,12 @@ export class VerProductoPage implements OnInit {
   constructor(
     private modalController: ModalController,
     private _serviceProducto: ProductoService,
-    private _serviceUsuario: UsuarioService,
-    public loadingComponent: LoadingComponent,
     public alertComponent: AlertComponent,
     public toastComponent: ToastComponent,
     public formBuilder: FormBuilder,
     public url: Url,
-
+    private spinnerDialog: SpinnerDialog,
+    private toast: Toast,
     ) {
       
       this.formularioActualizacion = this.formBuilder.group({
@@ -54,10 +53,10 @@ export class VerProductoPage implements OnInit {
 
   }
 
-  async obtenerProducto(){
-    await this.loadingComponent.presentLoading(`Obteniendo ${this.nombre}`)
+  obtenerProducto(){
+    this.spinnerDialog.show(`Obteniendo ${this.nombre}`)
     this._serviceProducto.obtenerProducto(this.idProducto).subscribe(data=>{
-      this.loadingComponent.loading.dismiss()
+      this.spinnerDialog.hide()
       this.PRODUCTO = data.producto
       this.PRODUCTO.imagenUrl = this.url.url + data.producto.imagenUrl
       this.formularioActualizacion.setValue({
@@ -66,24 +65,26 @@ export class VerProductoPage implements OnInit {
         descripcion: this.PRODUCTO.descripcion,
         precio: this.PRODUCTO.precio,
       })
-
+      
     },error=>{
-      this.loadingComponent.loading.dismiss()
+      this.spinnerDialog.hide()
       this.alertComponent.alerta('Error',error.error)
       console.log(error)
     })
   }
 
   actualizarProducto(){
-    this.loadingComponent.presentLoading(`Actualizando ${this.PRODUCTO.nombre}`)
+    this.spinnerDialog.show(`Actualizando ${this.nombre}`)
     let productoActualizado = this.formularioActualizacion.value
     console.log(productoActualizado)
     this._serviceProducto.actualizarProducto(this.idProducto,productoActualizado).subscribe(data=>{
-      this.loadingComponent.loading.dismiss()
-      this.toastComponent.toast(data.message)
+      this.spinnerDialog.hide()
+      this.toast.show(data.message,this.toastComponent.tiempo,this.toastComponent.ubicacion).subscribe(data=>{
+        console.log(data)
+      })
       this.obtenerProducto()      
     },error=>{
-      this.loadingComponent.loading.dismiss()
+      this.spinnerDialog.hide()
       this.alertComponent.alerta('error',error.error)
     })
   }
@@ -95,19 +96,21 @@ export class VerProductoPage implements OnInit {
       resultType: CameraResultType.Base64,
       source: CameraSource.Camera
     })
-    this.loadingComponent.presentLoading('Actualizando Imagen de producto...')
+    this.spinnerDialog.show('Actualizando imagen del producto...')
 
   console.log('Imagen: ', image)
   const blobData = this.b64toBlob(image.base64String, `image/${image.format}`)    
   const imageName = 'nombreQueLePonemosantes de la extension'
   
   this._serviceProducto.subirImagenProducto(blobData,imageName,image.format,this.idProducto).subscribe(data=>{
-      
-      this.loadingComponent.loading.dismiss()
+      this.spinnerDialog.hide()
+      this.toast.show(data.message, this.toastComponent.tiempo,this.toastComponent.ubicacion).subscribe(data=>{
+        console.log(data)
+      })
       this.obtenerProducto()
-    
+      
     },error =>{
-      this.loadingComponent.loading.dismiss()
+      this.spinnerDialog.hide()
       this.alertComponent.alerta('error',error)
       console.error(error)
     })

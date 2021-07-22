@@ -1,15 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { UsuarioService } from '../../../services/usuario.service';
 import { Url } from '../../../class/url';
-import { LoadingComponent } from '../../../components/loading/loading.component';
 import { AlertComponent } from '../../../components/alert/alert.component';
 import { ToastComponent } from '../../../components/toast/toast.component';
 import { ActionSheetController, AlertController, ModalController } from '@ionic/angular';
 import { VerClientePage } from '../ver-cliente/ver-cliente.page';
-import { Platform } from '@ionic/angular';
 
 import { Toast } from '@ionic-native/toast/ngx';
 import { SpinnerDialog } from '@ionic-native/spinner-dialog/ngx';
+import { Vibration } from '@ionic-native/vibration/ngx';
 
 @Component({
   selector: 'app-clientes',
@@ -30,25 +29,25 @@ export class ClientesPage implements OnInit {
     public url: Url,
     private spinnerDialog: SpinnerDialog,
     private toast: Toast,
-    public loadingComponent: LoadingComponent,
     public toastComponent: ToastComponent,
     public alertComponent: AlertComponent,
     public modalController: ModalController,
     public actionSheetController: ActionSheetController,
     public alertController: AlertController,
-    public platform: Platform
-    
+    private vibration: Vibration,
+
   ) { }
 
   ngOnInit() {
     this.obtenerClientes()
   }
-
+ 
   doRefresh(event) {
     this.obtenerClientes()
+    this.vibration.vibrate(500);
     setTimeout(() => {
       event.target.complete();
-    }, 1000);
+    }, 500);
   }
 
 
@@ -56,11 +55,11 @@ export class ClientesPage implements OnInit {
     this._serviceUsuario.obtenerClientesDeshabilitados().subscribe(data=>{
       this.clientesDeshabilitados = data.usuarios
     },error=>{
-      if(this.platform.is('android')){
-        this.toast.show(`${error.error.message}`, this.toastComponent.tiempo,this.toastComponent.ubicacion)
-      }else{
-        this.toastComponent.toast(error.error.message)
-      }
+        this.toast.show(`${error.error.message}`, this.toastComponent.tiempo,this.toastComponent.ubicacion).subscribe(
+          toast => {
+            console.log(toast);
+          }
+        );
       this.mostrar_ocultar = false
       this.textoMostar_ocultar = "No hay Clientes deshabilitados"
     })
@@ -68,14 +67,15 @@ export class ClientesPage implements OnInit {
 
 
   async obtenerClientes(){
-
+    this.spinnerDialog.show()
     this._serviceUsuario.obtenerClientes().subscribe(data=>{  
+      this.spinnerDialog.hide()
       this.clientes = data.usuarios
       this.clientVal = data.usuarios.length
       console.log(this.clientVal)
     },error=>{
+      this.spinnerDialog.hide()
       this.alertComponent.alerta('Error',error.error.message)
-
     })
   }
 
@@ -144,32 +144,32 @@ export class ClientesPage implements OnInit {
     const alert = await this.alertController.create({
       cssClass: 'my-custom-class',
       header: `ATENCION!`,
-      message: `Estas seguro que quieres eliminar <strong>${nombre}</strong>`,
+      message: `Estas seguro que quieres deshabilitar <strong>${nombre}</strong>`,
       buttons: [
         {
           text: 'Cancelar',
           cssClass: 'secondary',
         }, {
-          text: 'Eliminar',
+          text: 'Deshabilitar',
           handler: () => {
             this.spinnerDialog.show();
 
             this._serviceUsuario.deshabilitarUsuario(id).subscribe(data=>{
-              if(this.platform.is('android')){
-                this.toast.show(`${data.message}`,this.toastComponent.tiempo,this.toastComponent.ubicacion)
-              }else{
-                this.toastComponent.toast(data.message)
-              }
+                this.toast.show(`${data.message}`,this.toastComponent.tiempo,this.toastComponent.ubicacion).subscribe(
+                  toast => {
+                    console.log(toast);
+                  }
+                );
               this.obtenerClientes()
               this.obtenerClientesDeshabilitados()
               this.spinnerDialog.hide()
               this.mostrar_ocultar = false
             },error=>{
-              if(this.platform.is('android')){
-                this.toast.show(`${error.message}`, this.toastComponent.tiempo,this.toastComponent.ubicacion)
-              }else{
-                this.toastComponent.toast(error.message)
-              }
+                this.toast.show(`${error.message}`, this.toastComponent.tiempo,this.toastComponent.ubicacion).subscribe(
+                  toast => {
+                    console.log(toast);
+                  }
+                );
               this.obtenerClientes()
               this.obtenerClientesDeshabilitados()
               this.spinnerDialog.hide()
@@ -178,15 +178,12 @@ export class ClientesPage implements OnInit {
         }
       ]
     });
-  
     await alert.present();
-
   }
 
+
+
   async habilitarCliente(id){
-
-
-
     const alert = await this.alertController.create({
       cssClass: 'my-custom-class',
       header: `ATENCION!`,
@@ -202,22 +199,22 @@ export class ClientesPage implements OnInit {
 
             this._serviceUsuario.habilitarClienteEmpleado(id).subscribe(data=>{
         
-              if(this.platform.is('android')){
-                this.toast.show(`${data.message}`,this.toastComponent.tiempo,this.toastComponent.ubicacion)
-              }else{
-                this.toastComponent.toast(data.message)
-              }
+              this.toast.show(`${data.message}`,this.toastComponent.tiempo,this.toastComponent.ubicacion).subscribe(
+                  toast => {
+                    console.log(toast);
+                  }
+                );
 
               this.obtenerClientes()
               this.obtenerClientesDeshabilitados()
               this.spinnerDialog.hide()
 
             },error=>{
-              if(this.platform.is('android')){
-                this.toast.show(`${error.message}`,this.toastComponent.tiempo,this.toastComponent.ubicacion)
-              }else{
-                this.toastComponent.toast(error.message)
-              }
+                this.toast.show(`${error.message}`,this.toastComponent.tiempo,this.toastComponent.ubicacion).subscribe(
+                  toast => {
+                    console.log(toast);
+                  }
+                );
               this.obtenerClientes()
               this.obtenerClientesDeshabilitados()
               this.spinnerDialog.hide()
@@ -231,13 +228,9 @@ export class ClientesPage implements OnInit {
     });
   
     await alert.present();
-
-
-
-
-
-
   }
+
+
 
   mostrarDeshabilitados(){
     if(this.mostrar_ocultar == true){

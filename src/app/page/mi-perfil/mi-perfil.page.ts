@@ -2,14 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import {  FormGroup,  FormControl,  Validators,  FormBuilder, Form} from '@angular/forms'
 import { Router } from '@angular/router';
 import { UsuarioService } from '../../services/usuario.service';
-import { Usuario } from '../../interfaces/usuario';
 import { CameraSource ,CameraResultType, Camera} from '@capacitor/camera';
 import { DomSanitizer, SafeResourceUrl, } from '@angular/platform-browser';
-import { LoadingComponent } from '../../components/loading/loading.component';
 import { AlertComponent } from '../../components/alert/alert.component';
 import { ToastComponent } from '../../components/toast/toast.component';
 import { Url } from '../../class/url';
-import { Platform } from '@ionic/angular';
 import { Toast } from '@ionic-native/toast/ngx';
 import { SpinnerDialog } from '@ionic-native/spinner-dialog/ngx';
 
@@ -25,12 +22,10 @@ export class MiPerfilPage implements OnInit {
   carga = false
   photo: SafeResourceUrl
   rolUsuario: string
-  tiempoToast: string = '2000'
 
   constructor(
     private toastComponent: ToastComponent,
     private alertComponent: AlertComponent,
-    public loadingComponent: LoadingComponent,
 
     public domSanitizer: DomSanitizer,
     public formBuilder: FormBuilder,
@@ -40,7 +35,6 @@ export class MiPerfilPage implements OnInit {
 
     private spinnerDialog: SpinnerDialog,
     private toast: Toast,
-    public platform: Platform
 
   ) {
     this.formularioActualizacion = this.formBuilder.group({
@@ -61,25 +55,10 @@ export class MiPerfilPage implements OnInit {
   }
 
  obtenerUsuario(){
-
-    if(this.platform.is('android')){
-      this.spinnerDialog.show();
-    }else{
-      this.loadingComponent.presentLoading('Cargando datos de usuario')
-    }
-
-
+  this.spinnerDialog.show('Obteniendo tu informacion...');
   let idUsuario = localStorage.getItem('usuario')
-
   this._serviceUsuario.obtenerUsuario(idUsuario).subscribe(data=>{
-
-    if(this.platform.is('android')){
-      this.spinnerDialog.hide();
-    }else{
-      this.loadingComponent.loading.dismiss()
-    }
-
-
+    this.spinnerDialog.hide();
     this.usuario = data.usuario
     this.formularioActualizacion.setValue({
       email: this.usuario.email,
@@ -91,13 +70,7 @@ export class MiPerfilPage implements OnInit {
     })
   this.usuario.imgPerfil = this.url.url + this.usuario.imgPerfil
 },error=>{
-
-  if(this.platform.is('android')){
-    this.spinnerDialog.hide();
-  }else{
-    this.loadingComponent.loading.dismiss()
-  }
-
+      this.spinnerDialog.hide();
       this.alertComponent.alerta("error",error)
       console.log(error)
     })
@@ -106,34 +79,23 @@ export class MiPerfilPage implements OnInit {
 
 
  actualizarDatos(){
-  
-    this.loadingComponent.presentLoading('Actualizando datos de usuario')
-
     const datos = this.formularioActualizacion.value
-
+    this.spinnerDialog.show('Actualizando tu informacion...')
     this._serviceUsuario.actualizarCliente(this.usuario._id,datos).subscribe(data=>{
-
-
-      if(this.platform.is('android')){
         this.toast.show(`${data.message}`, this.toastComponent.tiempo, this.toastComponent.tiempo).subscribe(
           toast => {
             console.log(toast);
           }
         )
-      }else{
-        this.toastComponent.toast(data.message)
-      }
-      
-      this.loadingComponent.loading.dismiss()
+      this.spinnerDialog.hide()
       this.obtenerUsuario()
-
     },error=>{
-      if(this.platform.is('android')){
-        this.toast.show(`error: ${error}`, this.toastComponent.tiempo, this.toastComponent.ubicacion)
-      }else{
-        this.alertComponent.alerta("error",error)
-      }
-      this.loadingComponent.loading.dismiss()
+      this.spinnerDialog.hide()
+        this.toast.show(`error: ${error}`, this.toastComponent.tiempo, this.toastComponent.ubicacion).subscribe(
+          toast => {
+            console.log(toast);
+          }
+        );
     })
 
   }
@@ -168,7 +130,11 @@ export class MiPerfilPage implements OnInit {
 
 
   obtenerGaleria(){
-    this.toast.show('Proximamente!!', this.tiempoToast,'bottom')    
+    this.toast.show('Proximamente!!',this.toastComponent.tiempo,this.toastComponent.ubicacion).subscribe(
+      toast => {
+        console.log(toast);
+      }
+    );   
   }
 
 

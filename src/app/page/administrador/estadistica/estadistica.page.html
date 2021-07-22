@@ -1,5 +1,17 @@
 <ion-content>
 
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content
+      pullingIcon="chevron-down-circle-outline"
+      pullingText="Pull to refresh"
+      refreshingSpinner="circles"
+      refreshingText="Refreshing...">
+      <ion-progress-bar type="indeterminate"></ion-progress-bar>
+    </ion-refresher-content>
+  </ion-refresher>
+
+  
+  
   <ion-card>
     <ion-card-header>
       <ion-card-title style="text-align: center">Estadisticas generales</ion-card-title>

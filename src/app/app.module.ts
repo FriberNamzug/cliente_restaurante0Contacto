@@ -15,6 +15,7 @@ import { Url } from './class/url';
 import { TouchID } from '@ionic-native/touch-id/ngx';
 import { Toast } from '@ionic-native/toast/ngx';
 import { SpinnerDialog } from '@ionic-native/spinner-dialog/ngx';
+import { Vibration } from '@ionic-native/vibration/ngx';
 
 @NgModule({
   declarations: [AppComponent],
@@ -25,7 +26,7 @@ import { SpinnerDialog } from '@ionic-native/spinner-dialog/ngx';
     AppRoutingModule,
     HttpClientModule,
   ],
-  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, LoadingComponent, AlertComponent, ToastComponent, Url,TouchID,Toast,SpinnerDialog],
+  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, LoadingComponent, AlertComponent, ToastComponent, Url,TouchID,Toast,SpinnerDialog,Vibration],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

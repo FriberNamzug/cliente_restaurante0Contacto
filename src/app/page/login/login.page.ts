@@ -6,7 +6,6 @@ import { AlertComponent } from '../../components/alert/alert.component';
 import { ToastComponent } from '../../components/toast/toast.component';
 import { AutenticacionService } from '../../services/autenticacion.service';
 
-import { Platform } from '@ionic/angular';
 import { Toast } from '@ionic-native/toast/ngx';
 import { SpinnerDialog } from '@ionic-native/spinner-dialog/ngx';
 @Component({
@@ -28,8 +27,6 @@ export class LoginPage implements OnInit {
     public _serviceAutenticacion: AutenticacionService,
     private spinnerDialog: SpinnerDialog,
     private toast: Toast,
-    public platform: Platform
-
     ) { 
 
       this.formularioLogin = this.formBuilder.group({
@@ -45,13 +42,7 @@ export class LoginPage implements OnInit {
 
   async ingresar(){
 
-    if(this.platform.is('android')){
-      this.spinnerDialog.show();
-    }else{
-      this.loadingComponent.presentLoading('Autenticando...')
-    }
-
-    
+      this.spinnerDialog.show('Validando informacion...');  
 
     /* Validamos que se haya escrito en el login */
     if(this.formularioLogin.invalid){
@@ -72,13 +63,10 @@ export class LoginPage implements OnInit {
     localStorage.setItem('rol',data.usuario.usuarioEncontrado.rol) 
     this.formularioLogin.reset()
 
-    if(this.platform.is('android')){
       this.spinnerDialog.hide()
-      this.toast.show(`Bienvenido ${data.usuario.usuarioEncontrado.nombre}`, this.toastComponent.tiempo,this.toastComponent.ubicacion)
-    }else{
-      this.toastComponent.toast(`Bienvenido ${data.usuario.usuarioEncontrado.nombre}`)
-      this.loadingComponent.loading.dismiss()
-    }
+      this.toast.show(`Bienvenido ${data.usuario.usuarioEncontrado.nombre}`,this.toastComponent.tiempo,this.toastComponent.ubicacion).subscribe(data=>{
+        console.log(data)
+      })
 
     if(rol === 'cliente'){
       this.router.navigate(['/cliente/inicio'])
@@ -89,23 +77,16 @@ export class LoginPage implements OnInit {
     }
     
    },error=>{
-
-    if(this.platform.is('android')){
       this.spinnerDialog.hide()
-      this.toast.show(` Error, ${error.error.message}`, this.tiempoToast, 'bottom').subscribe(
+
+      this.toast.show(` Error, ${error.error.message}`, this.toastComponent.tiempo, this.toastComponent.ubicacion).subscribe(
         toast => {
           console.log(toast);
           console.log('Poner un reload o algo en caso de que falle el login por ejemplo por falta de internet o algo')
         }
       )
-    }else{
-      this.alertComponent.alerta("Error",error.error.message)
-      this.loadingComponent.loading.dismiss()
-    }
-
     this.formularioLogin.reset()
     console.log(error)
-
    })
 
 

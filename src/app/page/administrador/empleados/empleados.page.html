@@ -1,8 +1,20 @@
 <ion-content>
 
+
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content
+      pullingIcon="chevron-down-circle-outline"
+      pullingText="Pull to refresh"
+      refreshingSpinner="circles"
+      refreshingText="Refreshing...">
+      <ion-progress-bar type="indeterminate"></ion-progress-bar>
+    </ion-refresher-content>
+  </ion-refresher>
+ 
+  
   <ion-card>
     <ion-card-header>
-      <ion-card-title style="text-align: center">Administracion de empleados</ion-card-title>
+      <ion-card-title class="ion-text-center" >Administracion de empleados</ion-card-title>
     </ion-card-header>
     <ion-card-content>
 <p style="color: maroon; justify-content: center;">Desde este apartado podras agregar nuevos empleados,
@@ -25,40 +37,140 @@ Ver la informacion del empleado y su estatus laboral.</p>
 
   <ion-card>
     <ion-card-header>
-      <ion-card-title>Registrar Empleado</ion-card-title>
+      <ion-button (click)="mostrarRegistro()" expand="block"  shape="round">
+        {{textoMostar_ocultarReg}}  
+        </ion-button>
+
     </ion-card-header>
-    <ion-card-content>
-formulario de registro de usuario
+    <ion-card-content *ngIf="mostrar_ocultarReg">
+
+      <ion-card-title class="ion-text-center">Registrar Empleado</ion-card-title>
+
+      <form [formGroup]="formularioRegistro">
+
+
+        <ion-item>
+          <ion-label  position="floating"> E-Mail <ion-text color="danger">*</ion-text></ion-label>
+          <ion-input  required formControlName="email" placeholder="Email de tu empleado" type="email"></ion-input>
+        </ion-item>
+    
+
+        <ion-item>
+          <ion-label position="floating"> Password:<ion-text color="danger">*</ion-text></ion-label>
+          <ion-input  formControlName="password" type="password"></ion-input>
+
+        </ion-item>
+
+
+        <ion-item>
+          <ion-label position="floating">Nombre:<ion-text color="danger">*</ion-text></ion-label>
+          <ion-input  formControlName="nombre" type="text"></ion-input>
+        </ion-item>
+        
+
+        <ion-item>
+          <ion-label position="floating">Apellido(s):<ion-text color="danger">*</ion-text></ion-label>
+          <ion-input required  formControlName="apellido" type="text"></ion-input>
+        </ion-item>
+
+
+        <ion-item>
+          <ion-label position="floating">edad:<ion-text color="danger">*</ion-text></ion-label>
+          <ion-input required  formControlName="edad" type="number"></ion-input>
+        </ion-item>
+
+
+        <ion-item>
+          <ion-label position="floating">telefono:<ion-text color="danger">*</ion-text></ion-label>
+          <ion-input required  formControlName="telefono" type="text"> </ion-input>
+        </ion-item>
+
+    
+    
+    
+      </form>
+      <ion-button color="success" expand="block" (click)="registrarEmpleado()" [disabled]="formularioRegistro.invalid">
+Registrar Empleado        <ion-icon name="play-outline"></ion-icon>
+      </ion-button>
+
+
+
+
+
+
+
     </ion-card-content>
   </ion-card>
 
 
-<ion-card>
+<ion-card *ngIf="empVal > 0">
+    <ion-card-header>
+      <ion-card-title>Empleados:</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+
+      <ion-list *ngFor="let e of empleados"> 
+        <ion-item >
+          <ion-avatar slot="start">
+            <img [src]="url.url + e.imgPerfil" />
+          </ion-avatar>
+          <ion-text class="ion-text-left">
+            {{e.nombre}}
+          </ion-text>
+
+        <ion-icon slot="start" *ngIf="e.statusLaboral === 'Laborando'" name="battery-full-outline"></ion-icon>
+        <ion-icon slot="start" *ngIf="e.statusLaboral === 'Break'" name="battery-charging-outline"></ion-icon>
+        <ion-icon slot="start" *ngIf="e.statusLaboral === 'Descanso'" name="battery-dead-outline"></ion-icon>
+
+
+          <ion-buttons slot="end">
+            <ion-button (click)="opciones(e._id)"><ion-icon slot="start" name="add"></ion-icon></ion-button>
+          </ion-buttons>
+          <!-- falta validar el status -->
+          <ion-icon name="battery-dead-outline" *ngIf=""></ion-icon>
+        </ion-item>
+    </ion-list>
+  </ion-card-content>
+</ion-card>
+
+<ion-card *ngIf="empVal == 0">
   <ion-card-header>
-    <ion-card-title>Empleados:</ion-card-title>
+ 
+    <ion-card-title   class="ion-text-center" >No hay empleados registrados</ion-card-title>
   </ion-card-header>
-  <ion-card-content>
-
-    <ion-list>
-      <ion-item *ngFor="let e of empleados">
-        <ion-avatar slot="start">
-          <img [src]="url.url + e.imgPerfil" />
-        </ion-avatar>
-
-        <ion-label>{{e.nombre}}</ion-label>
-        <ion-buttons slot="end">
-          <ion-button (click)="verEmpleado()"><ion-icon slot="start" name="add"></ion-icon>Ver</ion-button>
-        </ion-buttons>
-        <!-- falta validar el status -->
-        <ion-icon name="battery-dead-outline" *ngIf=""></ion-icon>
-      </ion-item>
-  </ion-list>
-</ion-card-content>
-
 </ion-card>
 
 
+<ion-card>
+  <ion-card-header>
+    <ion-card-title class="ion-text-center" >Cuentas deshabilitadas</ion-card-title>
+  </ion-card-header>
+  <ion-card-content>
+    
+  <ion-button (click)="mostrarDeshabilitados()" expand="block"  shape="round">
+{{textoMostar_ocultarDes}}  
+</ion-button>
+  </ion-card-content>
+</ion-card>
 
+<div *ngIf="mostrar_ocultarDes">
+  <ion-card>
+    <ion-list>
+      <ion-item *ngFor="let e of empleadosDeshabilitados">
+        <ion-avatar slot="start">
+          <img [src]="url.url + e.imgPerfil" />
+        </ion-avatar>
+        <ion-text class="ion-text-left">
+          {{e.nombre}}
+        </ion-text>
+        <ion-buttons slot="end">
+          <ion-button (click)="habilitarEmpleado(e._id)"><ion-icon slot="start" name="return-down-forward-outline"></ion-icon>Habilitar</ion-button>
+        </ion-buttons>
+      </ion-item>
+    </ion-list>
+  </ion-card>
+</div>
+  
 
 
 

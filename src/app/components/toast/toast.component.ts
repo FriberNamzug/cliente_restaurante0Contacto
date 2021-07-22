@@ -12,7 +12,7 @@ export class ToastComponent implements OnInit {
 
   ngOnInit() {}
   tiempo: string = '1500'
-  ubicacion: string = 'button'
+  ubicacion: string = 'bottom'
   async toast(mensaje:string){
 
     const toast = await this.toastController.create({

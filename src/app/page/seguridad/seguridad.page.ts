@@ -6,12 +6,12 @@ import { PasswordService, validacionPasswordPair } from '../../services/password
 
 
 /* COMPONENTES */
-import { LoadingComponent } from '../../components/loading/loading.component';
 import { AlertComponent } from '../../components/alert/alert.component';
 import { ToastComponent } from '../../components/toast/toast.component';
 
 /* NATIVE */
-import { TouchID } from '@ionic-native/touch-id/ngx';
+import { Toast } from '@ionic-native/toast/ngx';
+import { SpinnerDialog } from '@ionic-native/spinner-dialog/ngx';
 
 @Component({
   selector: 'app-seguridad',
@@ -24,15 +24,14 @@ export class SeguridadPage implements OnInit {
 
   constructor(
 
-    private loadingComponent: LoadingComponent,
     private alertComponent: AlertComponent,
-    private touchId: TouchID,
     public formBuilder: FormBuilder,
     public router: Router,
     public _serviceUsuario: UsuarioService,
     public _servicePassword: PasswordService,
-    public toastComponent: ToastComponent
-
+    public toastComponent: ToastComponent,
+    private spinnerDialog: SpinnerDialog,
+    private toast: Toast,
   ) {
       this.formularioActualizacion = this.formBuilder.group({
         'passwordOld':    ["",Validators.required], 
@@ -46,41 +45,28 @@ export class SeguridadPage implements OnInit {
 
   ngOnInit() {
 
-    this.touchId.isAvailable()
-  .then(
-    res => console.log('TouchID is available!'),
-    err => console.error('TouchID is not available', err)
-  );
-    
 
   }
 
 
-  boton(){
-    this.touchId.verifyFingerprint('Scan your fingerprint please')
-    .then(
-      res => console.log('Ok', res),
-      err => console.error('Error', err)
-    );
-  }
 
   actualizarPassword(){
-    this.loadingComponent.presentLoading('Actualizando password...')
-
+    this.spinnerDialog.show('Actualizando Passsword')
     let idUsuario = localStorage.getItem('usuario')
-    
     this.formularioActualizacion.value
     const passwords = {
       viejaPassword: this.formularioActualizacion.get('passwordOld')?.value,
       nuevaPassword: this.formularioActualizacion.get('password')?.value,
     }
     this._servicePassword.actualizarPassword(idUsuario,passwords).subscribe(data=>{
-      this.loadingComponent.loading.dismiss()
+      this.spinnerDialog.hide()
       this.toastComponent.toast(data.message)
-
+      this.toast.show(data.message,this.toastComponent.tiempo,this.toastComponent.ubicacion).subscribe(data=>{
+        console.log(data)
+      })      
     },error=>{
+      this.spinnerDialog.hide()
       this.alertComponent.alerta('Error',error.error.message)
-      this.loadingComponent.loading.dismiss()
     })
 
   }

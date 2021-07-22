@@ -5,10 +5,11 @@ import { PasswordService, validacionPasswordPair } from '../../services/password
 import { AutenticacionService } from '../../services/autenticacion.service';
 
 /* COMPONENTES */
-import { LoadingComponent } from '../../components/loading/loading.component';
 import { AlertComponent } from '../../components/alert/alert.component';
 import { ToastComponent } from '../../components/toast/toast.component';
 
+import { Toast } from '@ionic-native/toast/ngx';
+import { SpinnerDialog } from '@ionic-native/spinner-dialog/ngx';
 
 @Component({
   selector: 'app-registro',
@@ -21,12 +22,15 @@ export class RegistroPage implements OnInit {
   check: boolean
 
   constructor(
-    private loadingComponent: LoadingComponent,
     private alertComponent: AlertComponent,
+    private toastComponent: ToastComponent,
 
     public formBuilder: FormBuilder,
     public router: Router,
     public _serviceAutenticacion: AutenticacionService,
+
+    private spinnerDialog: SpinnerDialog,
+    private toast: Toast,
   ) { 
 
     this.formularioRegistro = this.formBuilder.group({
@@ -51,18 +55,20 @@ export class RegistroPage implements OnInit {
   }
 
   async registro(){
-    this.loadingComponent.presentLoading('Validando datos...')
+    this.spinnerDialog.show('Validando Datos...',);
 
     const datos = this.formularioRegistro.value
-    
     this._serviceAutenticacion.signup(datos).subscribe(data => {
-
-      this.loadingComponent.loading.dismiss()
-      this.alertComponent.alerta(data.message,"Inicia sesion con tus datos que anteriormente registraste")
+      this.spinnerDialog.hide()
       this.router.navigate(['/login'])
-
-    },error=>{
-      this.loadingComponent.loading.dismiss()
+      this.toast.show(`${data.message}, Inicia session`, "4000",this.toastComponent.ubicacion).subscribe(
+        toast => {
+          console.log(toast);
+        }
+        );
+        
+      },error=>{
+      this.spinnerDialog.hide()
       this.alertComponent.alerta("Error", error.error.message)
     })
 

@@ -6,7 +6,6 @@ import { ActionSheetController, AlertController } from '@ionic/angular';
 import { ModalController,IonRouterOutlet } from '@ionic/angular';
 
 /* COMPONENTES */
-import { LoadingComponent } from '../../../components/loading/loading.component';
 import { AlertComponent } from '../../../components/alert/alert.component';
 import { ToastComponent } from '../../../components/toast/toast.component';
 import { ProductoService } from '../../../services/producto.service';
@@ -14,6 +13,12 @@ import { VerProductoPage } from '../../ver-producto/ver-producto.page';
 
 /* CLASES */
 import { Url } from '../../../class/url';
+
+/* NATIVE */
+import { Toast } from '@ionic-native/toast/ngx';
+import { SpinnerDialog } from '@ionic-native/spinner-dialog/ngx';
+import { Vibration } from '@ionic-native/vibration/ngx';
+
 
 @Component({
   selector: 'app-productos',
@@ -28,7 +33,6 @@ export class ProductosPage implements OnInit {
 
   constructor(
 
-    private loadingComponent: LoadingComponent,
     private alertComponent: AlertComponent,
     public formBuilder: FormBuilder,
     private routerOutlet: IonRouterOutlet,
@@ -40,7 +44,10 @@ export class ProductosPage implements OnInit {
     public toastComponent: ToastComponent,
     public actionSheetController: ActionSheetController,
     public alertController: AlertController,
-    public modalController: ModalController
+    public modalController: ModalController,
+    private spinnerDialog: SpinnerDialog,
+    private toast: Toast,
+    private vibration: Vibration,
 
   ) { 
  
@@ -58,17 +65,28 @@ export class ProductosPage implements OnInit {
     this.obtenerProductos()
   }
 
+  doRefresh(event) {
+    this.obtenerProductos()
+    this.vibration.vibrate(500);
+    setTimeout(() => {
+      event.target.complete();
+    }, 500);
+  }
+
+
 
   agregarProducto(){
-    this.loadingComponent.presentLoading('Agregando Producto...')
+    this.spinnerDialog.show('Agregando Producto...')
     let producto = this.formularioNuevoProducto.value
     this._serviceProducto.crearProducto(producto).subscribe(data=>{
-      this.loadingComponent.loading.dismiss()
-      this.toastComponent.toast(data.message)
+      this.spinnerDialog.hide()
+      this.toast.show(data.message,this.toastComponent.tiempo,this.toastComponent.ubicacion).subscribe(data=>{
+        console.log(data)
+      })
       this.obtenerProductos()
       this.formularioNuevoProducto.reset()
     },error=>{
-      this.loadingComponent.loading.dismiss()
+      this.spinnerDialog.hide()
       this.alertComponent.alerta(error.error)
       this.formularioNuevoProducto.reset()
     })
@@ -123,14 +141,13 @@ export class ProductosPage implements OnInit {
 
 
  async obtenerProductos(){
-   await this.loadingComponent.presentLoading('Obteniendo Productos ...')
+   this.spinnerDialog.show('Obteniendo productos...')
     this._serviceProducto.obtenerProductos().subscribe(data=>{
-      this.loadingComponent.loading.dismiss()
+      this.spinnerDialog.hide()
       this.PRODUCTOS = data.productos
-
-     // console.log(data.productos)
+      
     },error=>{
-      this.loadingComponent.loading.dismiss()
+      this.spinnerDialog.hide()
       this.alertComponent.alerta(error.error)
     })
   }
@@ -150,7 +167,9 @@ export class ProductosPage implements OnInit {
           text: 'Eliminar',
           handler: () => {
                this._serviceProducto.eliminarProducto(id).subscribe(data=>{
-                 this.toastComponent.toast(data.message)
+                this.toast.show(data.message,this.toastComponent.tiempo,this.toastComponent.ubicacion).subscribe(data=>{
+                  console.log(data)
+                })
                  this.obtenerProductos()
               }, error=>{
                 this.alertComponent.alerta(error.error)

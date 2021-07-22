@@ -62,9 +62,16 @@ habilitarClienteEmpleado(id:any):Observable<any>{
 obtenerClientesDeshabilitados():Observable<any>{
   return this.http.get(`${this.url.url}${this.adicion}clientes/deshabilitado/`)
 }
+obtenerEmpleadoDeshabilitados():Observable<any>{
+  return this.http.get(`${this.url.url}${this.adicion}empleados/deshabilitado/`)
+}
 
-
-
+crearEmpleado(empleado:any):Observable<any>{
+  return this.http.post(`${this.url.url}${this.adicion}`,empleado)
+}
+cambiarRol(id,rol):Observable<any>{
+  return this.http.put(`${this.url.url}${this.adicion}cambioderol/id`,rol)
+}
 
 
 
