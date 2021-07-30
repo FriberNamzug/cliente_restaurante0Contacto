@@ -46,7 +46,12 @@ const routes: Routes = [
   {
     path: 'ver-empleado',
     loadChildren: () => import('./page/ver-empleado/ver-empleado.module').then( m => m.VerEmpleadoPageModule)
+  },
+  {
+    path: 'chat/:room',
+    loadChildren: () => import('./page/chat/chat.module').then( m => m.ChatPageModule)
   }
+
 
   
 ];

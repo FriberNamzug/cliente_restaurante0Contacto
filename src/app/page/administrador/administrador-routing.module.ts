@@ -50,6 +50,11 @@ const routes: Routes = [
         loadChildren: () => import('../mi-perfil/mi-perfil.module').then( m => m.MiPerfilPageModule)
       },
       {
+        path: 'chat/:sala',
+        loadChildren: () => import('../chat/chat.module').then( m => m.ChatPageModule)
+      },
+    
+      {
         path: '',
         redirectTo: 'panel-control',
         pathMatch: 'full'
@@ -60,6 +65,7 @@ const routes: Routes = [
     path: 'mi-perfil',
     loadChildren: () => import('./ver-cliente/ver-cliente.module').then( m => m.VerClientePageModule)
   },
+
 
 
 

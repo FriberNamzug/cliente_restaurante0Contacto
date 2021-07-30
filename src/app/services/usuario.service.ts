@@ -27,6 +27,10 @@ export class UsuarioService {
     return this.http.get(`${this.url.url}${this.adicion}/${id}`)
   }
   
+  obtenerUsuarios():Observable<any>{
+    return this.http.get(`${this.url.url}${this.adicion}/`)
+  }
+  
   
   obtenerClientes():Observable<any>{
     return this.http.get(`${this.url.url}${this.adicion}clientes/`)

@@ -1,9 +1,44 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>mensaje</ion-title>
+    <ion-title>Mensajes</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+  <ion-list>
+    <ion-list-header>
+      <ion-label> Selecciona con quien quieres hablar</ion-label>
+    </ion-list-header>
+
+    <ion-item>
+      <ion-label>Abrir nuevo chat</ion-label>
+      <ion-select>
+        <ion-select-option *ngFor="let usuario of usuarios" [value]="usuario._id">{{usuario.nombre}}</ion-select-option>
+      </ion-select>
+    </ion-item>
+  </ion-list>
+
+
+<ion-card>
+  <ion-card-header>
+    <ion-card-title class="ion-text-center" >Tus chats</ion-card-title>
+  </ion-card-header>
+
+
+  <ion-list *ngFor="let usuario of usuarios">
+    <ion-item (click)="verChat(usuario._id)" >
+      <ion-avatar slot="start">
+        <img [src]="url.url + usuario.imgPerfil" />
+      </ion-avatar>
+      <ion-label>{{usuario.nombre}}</ion-label>
+
+
+    </ion-item>
+</ion-list>
+
+</ion-card>
+
+
+
 
 </ion-content>

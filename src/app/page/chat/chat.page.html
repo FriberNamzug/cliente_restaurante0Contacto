@@ -1,0 +1,38 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="volverSala()">
+        <ion-icon slot="icon-only" name="arrow-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-label>Chat de {{infoChat.nombre }}</ion-label>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <div class="chatContainer">
+    <p [ngClass]="{'local': message.messageType === true, 'remoto': message.messageType === false}" 
+        class="local" *ngFor="let message of chat.chats">{{message.mensaje}}</p>
+        
+        
+        
+  </div>
+
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+
+
+    <div class="inputContainer">
+
+      <form (ngSubmit)="sendMessage()">
+        <ion-input [(ngModel)]="texto" [ngModelOptions]="{standalone:true}" type="text" placeholder="Escribe un mensaje."></ion-input>
+  
+      </form>
+    </div>
+
+    
+    </ion-toolbar>
+</ion-footer>

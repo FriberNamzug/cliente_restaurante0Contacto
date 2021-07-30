@@ -123,7 +123,7 @@ export class MiPerfilPage implements OnInit {
     
     },error =>{
       this.spinnerDialog.hide();
-      this.alertComponent.alerta('error',error)
+      this.alertComponent.alerta('error',error.error)
     })
 
   } 
